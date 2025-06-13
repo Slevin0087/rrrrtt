@@ -51,6 +51,7 @@ export const GameEvents = {
   CARD_TO_FOUNDATION: "card:to:foundation",
   CARD_TO_TABLEAU: "card:to:tableau",
   CARD_MOVED: "card:moved",
+  UNDO_MOVE: "undo:move",
   CARD_MOVE_COMPLETED: "game:move:completed",
   STOCK_CLICK: "stock:click",
   SCORE_UPDATE: "game:score:update",

@@ -6,7 +6,7 @@ import { GameLogicSystem } from "../systems/GameLogicSystem.js";
 import { RenderingSystem } from "../systems/RenderingSystem.js";
 import { GameEvents, AudioName } from "../utils/Constants.js";
 import { AnimationSystem } from "../systems/AnimationSystem.js";
-// import { CardSystem } from "../systems/CardSystem.js";
+import { CardSystem } from "../systems/CardSystem.js";
 
 export class Game {
   constructor(eventManager, stateManager, audioManager) {
@@ -73,6 +73,7 @@ export class Game {
       ),
       render: new RenderingSystem(this.eventManager, this.stateManager),
       animation: new AnimationSystem(this.eventManager, this.stateManager),
+      cardSystem: new CardSystem(this.eventManager, this.stateManager),
     };
 
     this.systems.logic.init();

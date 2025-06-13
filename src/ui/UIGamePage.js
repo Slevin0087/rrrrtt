@@ -15,10 +15,10 @@ export class UIGamePage {
       hintBtn: document.getElementById("hint"),
       menuBtn: document.getElementById("menu-btn"),
       collectBtn: document.getElementById("collect-cards"),
+      undoBtn: document.getElementById("undo-btn"),
     };
 
     this.init();
-
   }
 
   init() {
@@ -59,6 +59,10 @@ export class UIGamePage {
     this.events.on("game:message", (message, type) => {
       this.showMessage(message, type);
     });
+
+    this.elements.undoBtn.addEventListener("click", () => {
+      this.events.emit(GameEvents.UNDO_MOVE);
+    });
   }
 
   updateUI() {
@@ -70,7 +74,7 @@ export class UIGamePage {
     this.elements.timeEl.textContent = `${minutes}${minutes}:${seconds}${seconds}`;
   }
 
-  updateScore(score) {   
+  updateScore(score) {
     this.elements.scoreEl.textContent = `🌟 ${score}`;
   }
 
@@ -92,8 +96,8 @@ export class UIGamePage {
   }
 
   show() {
-    console.log('SHOOOOOOOOOOOOOOOOOOW GAME');
-    
+    console.log("SHOOOOOOOOOOOOOOOOOOW GAME");
+
     this.page.classList.remove("hidden");
     this.updateUI();
   }
