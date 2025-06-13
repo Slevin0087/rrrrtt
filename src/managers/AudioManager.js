@@ -34,7 +34,8 @@ export class AudioManager {
       true
     );
     // console.log("this.state.settings:", this.stateManager.state);
-
+    console.log('this.stateManager.state.settings.musicVolume:', this.stateManager.state.settings.musicVolume);
+    
     this.backgroundMusic.volume = this.stateManager.state.settings.musicVolume;
   }
 
