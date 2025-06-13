@@ -1,0 +1,73 @@
+export const CardSuits = {
+  HEARTS: "♥",
+  DIAMONDS: "♦",
+  CLUBS: "♣",
+  SPADES: "♠",
+};
+
+export const CardValues = [
+  "A",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "10",
+  "J",
+  "Q",
+  "K",
+];
+
+export const GameEvents = {
+  APP_INIT: "app:init",
+  STORAGE_SET: "storage:set",
+  UIMANAGER_INIT: "uiManager:init",
+  UINAMEPAGE_SHOW: "uiNamePage:show",
+  UIMENUPAGE_SHOW: "uiMenuPage:show",
+  UI_SETTINGS_SHOW: "ui:settings:show",
+  UI_STATEPLAYER_SHOW: "ui:stateplayer:show",
+  UI_SHOP_SHOW: "ui:shop:show",
+  UI_NAME_HIDE: "ui:name:hide",
+  SET_ACTIV_PAGE: "set:activ:page",
+  PLAYER_NAME_SET: "player:name:set",
+  END_SET_NEW_GAME: "end:set:new:game",
+  SET_CURRENT_GAME: "set:current:game",
+  GAME_NEW: "game:new",
+  GAME_START: "game:start",
+  GAME_CONTINUE: "game:continue",
+  GAME_RESTART: "game:restart",
+  GAME_PAUSE: "game:pause",
+  GAME_EXIT: "game:exit",
+  GAME_END: "game:end",
+  GAME_WIN: "game:win",
+  GAME_MOVE: "game:move",
+  GAME_OVER: "game:over",
+  CARD_CLICK: "card:clicked",
+  CARD_FLIP: "card:flip",
+  UI_ANIMATION_POINTS_EARNED: "ui:animation:points:earned",
+  CARD_TO_FOUNDATION: "card:to:foundation",
+  CARD_TO_TABLEAU: "card:to:tableau",
+  CARD_MOVED: "card:moved",
+  CARD_MOVE_COMPLETED: "game:move:completed",
+  STOCK_CLICK: "stock:click",
+  SCORE_UPDATE: "game:score:update",
+  TIME_UPDATE: "game:time:update",
+};
+
+export const AnimationDurations = {
+  CARD_MOVE: 300,
+  CARD_FLIP: 200,
+  FADE_IN: 250,
+  FADE_OUT: 250,
+};
+
+export const AudioName = {
+  BACKGROUND: "background",
+  CARD_FLIP: "card-flip",
+  CLICK: "click",
+  INFO: "info",
+  WIN: "win",
+};

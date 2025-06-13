@@ -1,0 +1,104 @@
+import { GameEvents } from "../utils/Constants.js";
+
+export class UIGamePage {
+  constructor(eventManager, stateManager) {
+    this.stateManager = stateManager;
+    this.events = eventManager;
+    this.state = stateManager.state;
+    this.page = document.getElementById("game-interface");
+    this.displayPage = "";
+    this.elements = {
+      messageEl: document.getElementById("message"),
+      scoreEl: document.getElementById("points-in-game"),
+      timeEl: document.getElementById("time-display"),
+      restartGameBtn: document.getElementById("new-game-ctr-btn"),
+      hintBtn: document.getElementById("hint"),
+      menuBtn: document.getElementById("menu-btn"),
+      collectBtn: document.getElementById("collect-cards"),
+    };
+
+    this.init();
+
+  }
+
+  init() {
+    this.getDisplayPage();
+    this.setupEventListeners();
+    this.updateUI();
+  }
+
+  getDisplayPage() {
+    const computedStyle = window.getComputedStyle(this.page);
+    this.displayPage = computedStyle.display;
+  }
+
+  setupEventListeners() {
+    this.elements.restartGameBtn.addEventListener("click", () => {
+      this.events.emit(GameEvents.GAME_RESTART);
+      this.updateScore(this.stateManager.state.game.score);
+    });
+
+    this.elements.hintBtn.addEventListener("click", () => {
+      this.events.emit("hint:request");
+    });
+
+    this.elements.menuBtn.addEventListener("click", () => {
+      this.events.emit(GameEvents.UIMENUPAGE_SHOW, this);
+    });
+
+    this.elements.collectBtn.addEventListener("click", () => {
+      this.events.emit("cards:collect");
+    });
+
+    this.events.on(GameEvents.SCORE_UPDATE, (score) => this.updateScore(score));
+
+    this.events.on(GameEvents.TIME_UPDATE, (time) => {
+      this.updateTime(time);
+    });
+
+    this.events.on("game:message", (message, type) => {
+      this.showMessage(message, type);
+    });
+  }
+
+  updateUI() {
+    this.updateScore(this.state.game.score);
+    this.updateTime(this.state.game.playTime);
+  }
+
+  resetTime(minutes, seconds) {
+    this.elements.timeEl.textContent = `${minutes}${minutes}:${seconds}${seconds}`;
+  }
+
+  updateScore(score) {   
+    this.elements.scoreEl.textContent = `🌟 ${score}`;
+  }
+
+  updateTime(time) {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    this.elements.timeEl.textContent = `${minutes}:${seconds
+      .toString()
+      .padStart(2, "0")}`;
+  }
+
+  showMessage(message, type = "info") {
+    this.elements.messageEl.textContent = message;
+    this.elements.messageEl.className = `game-message ${type}`;
+
+    setTimeout(() => {
+      this.elements.messageEl.className = "game-message";
+    }, 2000);
+  }
+
+  show() {
+    console.log('SHOOOOOOOOOOOOOOOOOOW GAME');
+    
+    this.page.classList.remove("hidden");
+    this.updateUI();
+  }
+
+  hide() {
+    this.page.classList.add("hidden");
+  }
+}
