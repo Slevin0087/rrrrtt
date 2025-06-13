@@ -53,6 +53,7 @@
   font-size: var(--font-size-s-350px);
   border-collapse: separate; /*Важно! Должно быть 'separate' (по умолчанию)*/
   border-spacing: calc(var(--gap-for-pstate) * 4) 0; /* Горизонтальное, затем вертикальное */
+  background-color: brown;
 }
 
 .right-td {
