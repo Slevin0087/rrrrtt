@@ -14,7 +14,7 @@ export class Foundation {
     element.className = "foundation";
     element.id = `foundation-${this.index}`;
     span.textContent = "A";
-    span.classList.add('foundation-span');
+    span.classList.add("foundation-span");
     element.append(span);
 
     // element.style.left = 290 + this.index * 90 + "px";
@@ -22,20 +22,27 @@ export class Foundation {
     return element;
   }
 
-  canAccept(card) {
-    if (!card.faceUp) return false;
+  canAccept(card, tableaus) {
 
+    if (!card.faceUp) return false;
+    if (card.positionData.parent.includes("foundation")) return false;
+    if (card.positionData.parent.includes("tableau")) {
+      
+      const tableauIndex = parseInt(card.positionData.parent.split("-")[1]);
+      console.log('ESSSSSSSSSSSSSSS:', tableauIndex);
+      console.log('WWWWWWWWWWWWWWWWWWWWWWWWWWW:', tableaus[tableauIndex].cards.length);
+      
+      if (tableaus[tableauIndex].cards.length > card.positionData.position + 1) return false;
+    };
     // Если фундамент пустой, принимаем только тузы
     if (this.isEmpty()) {
-      if (card.value !== "A") return false;
-      // this.suit = card.suit;
-      return true;
+      return card.value === "A";
     }
-
     // Проверяем последовательность и масть
     const topCard = this.getTopCard();
-    // return card.suit === this.suit && card.getRank() === topCard.getRank() + 1;
-    return card.suit === topCard.suit && card.getRank() === topCard.getRank() + 1;
+    return (
+      card.suit === topCard.suit && card.getRank() === topCard.getRank() + 1
+    );
   }
 
   addCard(card) {

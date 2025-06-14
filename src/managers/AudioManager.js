@@ -1,4 +1,5 @@
 import { AudioName } from "../utils/Constants.js";
+import { GameEvents } from "../utils/Constants.js";
 
 export class AudioManager {
   constructor(eventManager, stateManager) {
@@ -33,9 +34,7 @@ export class AudioManager {
       "./src/assets/sounds/background.mp3",
       true
     );
-    // console.log("this.state.settings:", this.stateManager.state);
-    console.log('this.stateManager.state.settings.musicVolume:', this.stateManager.state.settings.musicVolume);
-    
+    // console.log("this.state.settings:", this.stateManager.state);    
     this.backgroundMusic.volume = this.stateManager.state.settings.musicVolume;
   }
 
@@ -50,14 +49,14 @@ export class AudioManager {
       this.setEffectsVolume(volume)
     );
 
-    this.eventManager.on("settings:sound:toggle", (enabled) =>
+    this.eventManager.on(GameEvents.SET_SOUND_TOGGLE, (enabled) =>
       this.toggleAllSounds(enabled)
     );
     this.eventManager.on("game:start", () => this.playMusic());
     this.eventManager.on("game:pause", () => this.pauseMusic());
     this.eventManager.on("game:resume", () => this.resumeMusic());
     this.eventManager.on("game:exit", () => this.stopMusic());
-    this.eventManager.on("settings:music:volume", (value) =>
+    this.eventManager.on(GameEvents.SETTINGS_MUSIC_VOLUME, (value) =>
       this.setMusicVolume(value)
     );
   }
@@ -141,25 +140,14 @@ export class AudioManager {
   }
 
   toggleAllSounds(enabled) {
-    // console.log('enabled:', enabled);
-
-    this.stateManager.state.settings.soundEnabled = enabled;
-    if (enabled) {
-      this.resumeMusic();
-    } else {
-      this.pauseMusic();
-    }
+    enabled ? this.resumeMusic() : this.pauseMusic();
     // this.saveSettings();
   }
 
-  setMusicVolume(volume) {
-    volume = volume / 100;
-    volume = Math.max(0, Math.min(1, volume));
-    this.stateManager.state.settings.musicVolume = volume;
+  setMusicVolume() {
     if (this.backgroundMusic) {
-      this.backgroundMusic.volume = volume;
+      this.backgroundMusic.volume = this.stateManager.state.settings.musicVolume;
     }
-    // this.saveSettings();
   }
 
   setEffectsVolume(volume) {

@@ -311,13 +311,13 @@ export class Storage {
   setPlayerStats(stats) {
     
     const storage = JSON.parse(localStorage.getItem("playerStats"));
-    console.log("в setPlayerStats", storage);
+    // console.log("в setPlayerStats", storage);
     const playerStats = {
       ...storage,
       ...stats,
     };
     localStorage.setItem("playerStats", JSON.stringify(playerStats));
-    console.log("в setPlayerStats", playerStats);
+    // console.log("в setPlayerStats", playerStats);
   }
 
   // === Session Data ===

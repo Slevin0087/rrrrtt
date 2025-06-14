@@ -20,7 +20,7 @@ export class Tableau {
 
   canAccept(card) {
     if (!card.faceUp) return false;
-
+    if (card.value === "A") return false;
     // Пустой tableau принимает только королей
     if (this.isEmpty()) {
       return card.value === "K";

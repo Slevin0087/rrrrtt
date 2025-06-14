@@ -12,7 +12,7 @@ export class EventManager {
   }
 
   emit(event, ...args) {
-    // console.log('event, ...args:', event, ...args);
+    console.log('event, ...args:', event, ...args);
     
     if (this.listeners.has(event)) {
       this.listeners.get(event).forEach((callback) => {

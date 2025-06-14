@@ -47,12 +47,13 @@ export class GameLogicSystem {
   }
 
   handleCardClick(card) {
-    this.audioManager.play(AudioName.CLICK);
+    this.audioManager.play(AudioName.CLICK);    
     if (!card.faceUp || this.stateManager.state.game.isPaused) return;
     const gameComponents = this.stateManager.state.currentGame.components;
     // Проверяем можно ли переместить карту в foundation
     for (let i = 0; i < gameComponents.foundations.length; i++) {
-      if (gameComponents.foundations[i].canAccept(card)) {
+      if (gameComponents.foundations[i].canAccept(card, gameComponents.tableaus)) {
+
         this.eventManager.emit(GameEvents.CARD_TO_FOUNDATION, {
           card,
           foundationIndex: i,
@@ -116,7 +117,6 @@ export class GameLogicSystem {
     // Рендер/Обновление карт
     this.eventManager.emit(GameEvents.CARD_MOVED);
     // this.audioManager.play("cardPlace");
-    this.eventManager.emit(GameEvents.CARD_MOVE_COMPLETED);
     const score = GameConfig.rules.scoreForFoundation;
     this.eventManager.emit(GameEvents.UI_ANIMATION_POINTS_EARNED, card, score);
   }
@@ -148,7 +148,6 @@ export class GameLogicSystem {
     this.openNextCardIfNeeded(source);
     this.eventManager.emit(GameEvents.CARD_MOVED);
     // this.audioManager.play("cardPlace");
-    this.eventManager.emit(GameEvents.CARD_MOVE_COMPLETED);
   }
 
   getCardSource(card) {
@@ -238,7 +237,7 @@ export class GameLogicSystem {
     }
 
     this.audioManager.play(AudioName.WIN);
-    this.eventManager.emit(GameEvents.GAME_WIN);
+    this.eventManager.emit(GameEvents.UI_ANIMATE_WIN);
   }
 
   provideHint() {

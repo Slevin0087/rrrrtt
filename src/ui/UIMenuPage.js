@@ -5,7 +5,7 @@ export class UIMenuPage {
     this.eventManager = eventManager;
     this.stateManager = stateManager;
     this.isRunningGame = false;
-    console.log('this.isRunningGame:', this.isRunningGame);
+    // console.log('this.isRunningGame:', this.isRunningGame);
     
     this.page = document.getElementById("game-menu");
     this.displayPage = "";

@@ -35,7 +35,7 @@ export class UISettingsPage {
     });
 
     this.elements.soundToggle.addEventListener("change", (e) => {
-      this.eventManager.emit("settings:sound:toggle", e.target.checked);
+      this.eventManager.emit(GameEvents.SET_SOUND_TOGGLE, e.target.checked);
     });
 
     this.elements.difficultySelect.addEventListener("change", (e) => {
@@ -43,31 +43,40 @@ export class UISettingsPage {
     });
 
     this.elements.musicVolume.addEventListener("input", (e) => {
-      this.eventManager.emit("settings:music:volume", parseFloat(e.target.value));
+      const volume = Math.max(0, Math.min(1, e.target.value / 100));
+      this.eventManager.emit(GameEvents.SET_MUSIC_VOLUME, parseFloat(volume));
+      this.eventManager.emit(GameEvents.SETTINGS_MUSIC_VOLUME);
+      e.target.style.setProperty(
+        "--fill-percent",
+        `${e.target.value}%`
+      );
     });
   }
 
   render() {
-    
     const settings = this.state.settings;
-    
+    console.log("settings:", settings);
+
     this.elements.soundToggle.checked = settings.soundEnabled;
     this.elements.difficultySelect.value = settings.difficulty;
-    this.elements.musicVolume.value = settings.musicVolume;
+    this.elements.musicVolume.value = settings.musicVolume * 100;
+    this.elements.musicVolume.style.setProperty(
+      "--fill-percent",
+      `${this.elements.musicVolume.value}%`
+    );
   }
-  
+
   saveSettings() {
     const newSettings = {
       soundEnabled: this.elements.soundToggle.checked,
       difficulty: this.elements.difficultySelect.value,
       musicVolume: parseFloat(this.elements.musicVolume.value),
     };
-    
+
     this.eventManager.emit("settings:save", newSettings);
   }
-  
+
   show() {
-    console.log("loaaaaaaaaaaaaaaaaaad", this.state.settings);
     this.render();
     this.page.classList.remove("hidden");
     // await Animator.fadeIn(this.page, this.displayPage);

@@ -84,8 +84,6 @@ export class UIShop {
   // }
 
   render(shopState, shopConfig) {
-    console.log("в render:", shopState);
-
     // Очищаем контейнер
     this.elements.itemsContainer.innerHTML = "";
 
@@ -97,10 +95,10 @@ export class UIShop {
       (item) =>
         item.category === this.getTypeForCategory(shopState.currentCategory)
     );
-    console.log("items:", items);
+    // console.log("items:", items);
 
     items.forEach((item) => {
-      console.log("dddddddddddddddddddddddddd");
+      // console.log("dddddddddddddddddddddddddd");
       const itemElement = this.createShopItemElement(item);
       this.elements.itemsContainer.append(itemElement);
     });
@@ -144,7 +142,7 @@ export class UIShop {
   //       </div>
 
   createShopItemElement(item) {
-    console.log("в createShopItemElement");
+    // console.log("в createShopItemElement");
 
     const containerElement = document.createElement("div");
     containerElement.className = "item-container";
@@ -201,7 +199,7 @@ export class UIShop {
   }
 
   setActiveCategory(category) {
-    console.log("в setActiveCategory:", category);
+    // console.log("в setActiveCategory:", category);
 
     // Обновляем кнопки
     Object.values(this.elements.categoryButtons).forEach((btn) => {

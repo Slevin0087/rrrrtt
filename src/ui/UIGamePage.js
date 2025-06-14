@@ -3,7 +3,7 @@ import { GameEvents } from "../utils/Constants.js";
 export class UIGamePage {
   constructor(eventManager, stateManager) {
     this.stateManager = stateManager;
-    this.events = eventManager;
+    this.eventManager = eventManager;
     this.state = stateManager.state;
     this.page = document.getElementById("game-interface");
     this.displayPage = "";
@@ -34,34 +34,35 @@ export class UIGamePage {
 
   setupEventListeners() {
     this.elements.restartGameBtn.addEventListener("click", () => {
-      this.events.emit(GameEvents.GAME_RESTART);
+      this.eventManager.emit(GameEvents.GAME_RESTART);
       this.updateScore(this.stateManager.state.game.score);
+      setTimeout(() => this.eventManager.emit(GameEvents.UI_ANIMATE_DEAL_CARDS), 1000);
     });
 
     this.elements.hintBtn.addEventListener("click", () => {
-      this.events.emit("hint:request");
+      this.eventManager.emit("hint:request");
     });
 
     this.elements.menuBtn.addEventListener("click", () => {
-      this.events.emit(GameEvents.UIMENUPAGE_SHOW, this);
+      this.eventManager.emit(GameEvents.UIMENUPAGE_SHOW, this);
     });
 
     this.elements.collectBtn.addEventListener("click", () => {
-      this.events.emit("cards:collect");
+      this.eventManager.emit("cards:collect");
     });
 
-    this.events.on(GameEvents.SCORE_UPDATE, (score) => this.updateScore(score));
+    this.eventManager.on(GameEvents.SCORE_UPDATE, (score) => this.updateScore(score));
 
-    this.events.on(GameEvents.TIME_UPDATE, (time) => {
+    this.eventManager.on(GameEvents.TIME_UPDATE, (time) => {
       this.updateTime(time);
     });
 
-    this.events.on("game:message", (message, type) => {
+    this.eventManager.on("game:message", (message, type) => {
       this.showMessage(message, type);
     });
 
     this.elements.undoBtn.addEventListener("click", () => {
-      this.events.emit(GameEvents.UNDO_MOVE);
+      this.eventManager.emit(GameEvents.UNDO_MOVE);
     });
   }
 
@@ -100,6 +101,7 @@ export class UIGamePage {
 
     this.page.classList.remove("hidden");
     this.updateUI();
+    setTimeout(() => this.eventManager.emit(GameEvents.UI_ANIMATE_WIN), 5000);
   }
 
   hide() {

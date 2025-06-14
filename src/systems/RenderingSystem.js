@@ -348,6 +348,7 @@ export class RenderingSystem {
 
     // Сохраняем ссылку на DOM элемент в карте
     card.domElement = cardElement;
+    card.parentElement = container;
   }
 
   updateCardPosition(cardElement, containerId, offset) {

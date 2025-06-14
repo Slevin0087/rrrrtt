@@ -31,7 +31,7 @@ export class UIPlayerStatePage {
 
   render() {
     const statePlayer = this.stateManager.state.player;
-    console.log('statePlayer:', statePlayer);
+    // console.log('statePlayer:', statePlayer);
     
     const container = document.getElementById('player-state-content');
     container.innerHTML = '';

@@ -85,12 +85,12 @@ export class StateManager {
       this.state.ui.activePage = activePage;
     });
 
-    this.eventManager.on("settings:sound:toggle", (enabled) => {
+    this.eventManager.on(GameEvents.SET_SOUND_TOGGLE, (enabled) => {
       this.state.settings.soundEnabled = enabled;
       this.saveGameSettings();
     });
 
-    this.eventManager.on("settings:music:volume", (value) => {
+    this.eventManager.on(GameEvents.SET_MUSIC_VOLUME, (value) => {     
       this.state.settings.musicVolume = value;
       this.saveGameSettings();
     });

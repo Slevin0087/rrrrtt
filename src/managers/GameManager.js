@@ -39,9 +39,12 @@ export class GameManager {
     //   // console.log('в gameLoop timestamp:', this.state.currentGame.update);
     // }
 
-    if (this.components.game.update) {
-      this.components.game.update(deltaTime / 1000)
-    }
+    // if (this.components.game.update) {
+    //   this.components.game.update(deltaTime / 1000)
+    // }
+
+    console.log('/////////////////////////////////////////////////////////////////////////////////////////');
+    
     
     requestAnimationFrame((t) => {
       this.gameLoop(t)

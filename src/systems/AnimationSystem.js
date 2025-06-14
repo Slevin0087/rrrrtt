@@ -22,9 +22,8 @@ export class AnimationSystem {
       GameEvents.UI_ANIMATION_POINTS_EARNED,
       (card, score) => {
         setTimeout(() => {
-
           Animator.showPointsAnimation(card, score);
-        }, 200)
+        }, 200);
       }
     );
     this.eventManager.on("ui:animate:move", (card, from, to, callback) =>
@@ -43,6 +42,8 @@ export class AnimationSystem {
       this.animateUndoMove(moveData, callback)
     );
 
+    this.eventManager.on(GameEvents.UI_ANIMATE_DEAL_CARDS, () => this.dealCardsAnimation());
+
     this.eventManager.on("ui:animate:win", () => this.playWinAnimation());
 
     this.eventManager.on("card:select", (card) => this.highlightCard(card));
@@ -55,6 +56,19 @@ export class AnimationSystem {
   //     animator: Animator(),
   //   }
   // }
+
+  dealCardsAnimation() {
+    const tableauElements = [];
+    const stockElement = document.getElementById("stock");
+    console.log('stockElement:', stockElement);
+    
+    this.stateManager.state.currentGame.components.tableaus.forEach(
+      (tableau) => {
+        tableauElements.push(tableau.element);
+      }
+    );
+    Animator.dealCardsAnimation(stockElement, tableauElements);
+  }
 
   animateCardMove(card, fromId, toId, callback) {
     const animation = async () => {
@@ -104,7 +118,7 @@ export class AnimationSystem {
   }
 
   animateCardFlip(card, callback) {
-    console.log("в аниматоре");
+    // console.log("в аниматоре");
 
     const animation = async () => {
       this.isAnimating = true;

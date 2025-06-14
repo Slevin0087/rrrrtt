@@ -1,4 +1,81 @@
 export class Animator {
+  /**
+   * Анимация раздачи карт из стока в tableau
+   * @param {HTMLElement} stockElement - DOM элемент стока
+   * @param {HTMLElement[]} tableauElements - Массив DOM элементов tableau
+   * @param {number} duration - Продолжительность анимации
+   * @param {number} delayBetweenCards - Задержка между картами
+   */
+  static dealCardsAnimation(
+    stockElement,
+    tableauElements,
+    duration = 500,
+    delayBetweenCards = 100
+  ) {
+    return new Promise((resolve) => {
+      // Создаем временную карту для анимации
+      const tempCard = document.createElement("div");
+      tempCard.className = "card face-down";
+      tempCard.style.position = "absolute";
+      tempCard.style.zIndex = "1000";
+      tempCard.style.background = 'repeating-linear-gradient(45deg,#1a5a1a,#1a5a1a 10px,#165016 20px)'
+
+      // Позиционируем временную карту поверх стока
+      const stockRect = stockElement.getBoundingClientRect();
+      tempCard.style.width = `${stockRect.width}px`;
+      tempCard.style.height = `${stockRect.height}px`;
+      tempCard.style.left = `${stockRect.left}px`;
+      tempCard.style.top = `${stockRect.top}px`;
+
+      document.body.appendChild(tempCard);
+
+      let completedAnimations = 0;
+      const totalAnimations =
+        (tableauElements.length * (tableauElements.length + 1)) / 2; // Формула треугольного числа
+
+      // Функция для анимации перемещения карты
+      const animateCardToTableau = (tableauIndex, cardIndex, delay) => {
+        setTimeout(() => {
+          const tableau = tableauElements[tableauIndex];
+          const tableauRect = tableau.getBoundingClientRect();
+
+          // Рассчитываем конечную позицию с учетом смещения в tableau
+          // const offsetY = cardIndex * UIConfig.layout.card.overlap;
+          const offsetY = cardIndex * 20;
+          // Клонируем временную карту для каждой анимации
+          const cardClone = tempCard.cloneNode();
+          document.body.appendChild(cardClone);
+
+          // Анимация перемещения
+          cardClone.style.transition = `transform ${duration}ms ease-out`;
+          cardClone.style.transform = `translate(${
+            tableauRect.left - stockRect.left
+          }px, ${tableauRect.top - stockRect.top + offsetY}px)`;
+
+          // По завершении анимации
+          setTimeout(() => {
+            cardClone.remove();
+            completedAnimations++;
+
+            if (completedAnimations === totalAnimations) {
+              tempCard.remove();
+              resolve();
+            }
+          }, duration);
+        }, delay);
+      };
+
+      // Запускаем анимации для каждой карты по схеме игры
+      let delay = 0;
+      for (let i = 0; i < tableauElements.length; i++) {
+        for (let j = 0; j <= i; j++) {
+          animateCardToTableau(i, j, delay);
+          delay += delayBetweenCards;
+        }
+      }
+    });
+  }
+
   static animateCardMove(cardElement, targetElement, duration = 300) {
     return new Promise((resolve) => {
       const startRect = cardElement.getBoundingClientRect();
@@ -20,6 +97,28 @@ export class Animator {
           resolve();
         }, duration);
       });
+    });
+  }
+
+  static animate({
+    element,
+    from,
+    to,
+    duration,
+    delay = 0,
+    easing = "linear",
+  }) {
+    return new Promise((resolve) => {
+      element.style.transition = `all ${duration}ms ${easing}`;
+      element.style.transform = `rotate(${from.rotate}deg) scale(${from.scale})`;
+
+      setTimeout(() => {
+        element.style.transform = `rotate(${to.rotate}deg) scale(${to.scale})`;
+
+        setTimeout(() => {
+          resolve();
+        }, duration);
+      }, delay);
     });
   }
 

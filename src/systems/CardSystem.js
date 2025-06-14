@@ -185,9 +185,7 @@ export class CardSystem {
         card,
         foundationIndex: fromIndex,
       });
-    } else if (fromType === "waste") {
-      console.log('КАРТА ИЗ WASTE, ПОКА НЕ РЕАЛИЗОВАНО ОТМЕНА ХОДА ПОСЛЕ ПЕРЕМЕЩЕНИЯ КАРТЫ ИЗ WASTE');
-      
+    } else if (fromType === "waste") {      
       this.eventManager.emit("card:to:waste", { card });
     }
   }

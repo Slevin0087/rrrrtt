@@ -7,6 +7,7 @@ export class Card {
     this.value = value;
     this.color = this.getColor();
     this.faceUp = false;
+    this.parentElement = null;
     this.positionData = {
       parent: null, // 'stock', 'waste', 'tableau-#', 'foundation-#'
       position: null,
