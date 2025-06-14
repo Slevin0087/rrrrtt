@@ -122,7 +122,7 @@
 }
 
 /* Переносим border на псевдоэлемент (не влияет на позиционирование карт) */
-.stock::before,
+/* .stock::before, */
 .foundation::before,
 .card-waste::before,
 .card-placeholder::before {

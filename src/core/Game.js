@@ -15,6 +15,7 @@ export class Game {
     this.eventManager = eventManager;
     this.stateManager = stateManager;
     this.audioManager = audioManager;
+    this.fullScreenBtn = document.getElementById("full-screen-btn");
     // this.audio = audioManager;
 
     // this.systems = {
@@ -36,6 +37,9 @@ export class Game {
   }
 
   setupEventListeners() {
+    this.fullScreenBtn.addEventListener("click", (e) =>
+      this.eventManager.emit(GameEvents.FULL_SCREEN_BTN, e)
+    );
     this.eventManager.on(GameEvents.CARD_CLICK, (card) =>
       this.systems.logic.handleCardClick(card)
     );
@@ -139,7 +143,7 @@ export class Game {
   }
 
   update(deltaTime) {
-    console.log("//////////////////////////////////////////////////////////");
+    // console.log("//////////////////////////////////////////////////////////");
 
     if (this.stateManager.state.game.isRunning) {
       this.stateManager.state.game.playTime += deltaTime;

@@ -227,6 +227,7 @@ export class RenderingSystem {
 
   addStockEventListeners(stock) {
     stock.addEventListener("click", () => {
+      if (stock.cards <= 0) return;
       this.eventManager.emit(GameEvents.STOCK_CLICK);
     });
   }

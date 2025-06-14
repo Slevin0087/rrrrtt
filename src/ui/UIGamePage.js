@@ -101,7 +101,6 @@ export class UIGamePage {
 
     this.page.classList.remove("hidden");
     this.updateUI();
-    setTimeout(() => this.eventManager.emit(GameEvents.UI_ANIMATE_WIN), 5000);
   }
 
   hide() {

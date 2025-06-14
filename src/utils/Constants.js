@@ -23,6 +23,7 @@ export const CardValues = [
 
 export const GameEvents = {
   APP_INIT: "app:init",
+  FULL_SCREEN_BTN: "full-screen-btn",
   STORAGE_SET: "storage:set",
   UIMANAGER_INIT: "uiManager:init",
   UINAMEPAGE_SHOW: "uiNamePage:show",

@@ -37,6 +37,9 @@ export class UIManager {
   }
 
   setupEventListeners() {
+    this.eventManager.on(GameEvents.FULL_SCREEN_BTN, (e) => {
+      this.toggleFullscreen(e.target);
+    })
     this.eventManager.on(GameEvents.UI_NAME_HIDE, () => {
       this.hideAll(this.components.uiNamePage);
       this.components.uiMenuPage.show();
@@ -102,6 +105,25 @@ export class UIManager {
       this.stateManager.state.ui.activePage = this.components.uiGamePage;
       this.stateManager.state.game.isRunning = true;
     });
+  }
+
+  toggleFullscreen(fullScreenBtn) {
+    console.log("заход в функцию, полный экран");
+    // const fullScreenBtn = document.getElementById("full-screen-btn");
+
+    if (!document.fullscreenElement) {
+      // Запуск полноэкранного режима
+      document.documentElement.requestFullscreen().catch((err) => {
+        console.error(`Ошибка при переходе в полноэкранный режим: ${err}`);
+      });
+      if (fullScreenBtn.textContent === "[ ]") fullScreenBtn.textContent = "_";
+    } else {
+      // Выход из полноэкранного режима
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+        if (fullScreenBtn.textContent === "_") fullScreenBtn.textContent = "[ ]";
+      }
+    }
   }
 
   hideAll(arg = null) {

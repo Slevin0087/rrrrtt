@@ -47,13 +47,15 @@ export class GameLogicSystem {
   }
 
   handleCardClick(card) {
-    this.audioManager.play(AudioName.CLICK);    
+    this.audioManager.play(AudioName.CLICK);
     if (!card.faceUp || this.stateManager.state.game.isPaused) return;
+    if (this.checkWinCondition()) return;
     const gameComponents = this.stateManager.state.currentGame.components;
     // Проверяем можно ли переместить карту в foundation
     for (let i = 0; i < gameComponents.foundations.length; i++) {
-      if (gameComponents.foundations[i].canAccept(card, gameComponents.tableaus)) {
-
+      if (
+        gameComponents.foundations[i].canAccept(card, gameComponents.tableaus)
+      ) {
         this.eventManager.emit(GameEvents.CARD_TO_FOUNDATION, {
           card,
           foundationIndex: i,
@@ -105,12 +107,6 @@ export class GameLogicSystem {
     const points = this.calculatePoints(GameConfig.rules.scoreForFoundation);
     this.stateManager.updateScore(points);
 
-    // Проверяем победу
-    if (this.checkWinCondition()) {
-      this.handleWin();
-      return;
-    }
-
     // Открываем следующую карту в tableau, если нужно
     this.openNextCardIfNeeded(source);
 
@@ -119,6 +115,11 @@ export class GameLogicSystem {
     // this.audioManager.play("cardPlace");
     const score = GameConfig.rules.scoreForFoundation;
     this.eventManager.emit(GameEvents.UI_ANIMATION_POINTS_EARNED, card, score);
+    // Проверяем победу
+    if (this.checkWinCondition()) {
+      this.handleWin();
+      return;
+    }
   }
 
   moveCardToTableau({ card, tableauIndex }) {
@@ -190,25 +191,28 @@ export class GameLogicSystem {
     const topCard = tableau.getTopCard();
 
     if (topCard && !topCard.faceUp) {
-      
       topCard.flip();
       const score = GameConfig.rules.scoreForCardFlip;
       this.stateManager.incrementStat("cardsFlipped");
       this.stateManager.updateScore(this.calculatePoints(score));
       this.audioManager.play(AudioName.CARD_FLIP);
-      this.eventManager.emit(GameEvents.UI_ANIMATION_POINTS_EARNED, topCard, score);
+      this.eventManager.emit(
+        GameEvents.UI_ANIMATION_POINTS_EARNED,
+        topCard,
+        score
+      );
     }
   }
 
   calculatePoints(score) {
     const { difficulty } = this.stateManager.state.game;
-      const multiplier = {
-        easy: 1.2,
-        normal: 1.0,
-        hard: 0.8,
-      }[difficulty];
+    const multiplier = {
+      easy: 1.2,
+      normal: 1.0,
+      hard: 0.8,
+    }[difficulty];
 
-    const resultScore = Math.round(score * multiplier);    
+    const resultScore = Math.round(score * multiplier);
     return resultScore;
   }
 
@@ -220,7 +224,9 @@ export class GameLogicSystem {
 
   handleWin() {
     this.stateManager.incrementStat("wins");
-    this.stateManager.updateScore(this.calculatePoints(GameConfig.rules.winScoreBonus));
+    this.stateManager.updateScore(
+      this.calculatePoints(GameConfig.rules.winScoreBonus)
+    );
 
     // Проверяем победу без подсказок
     if (this.stateManager.state.game.hintsUsed === 0) {
@@ -237,6 +243,7 @@ export class GameLogicSystem {
     }
 
     this.audioManager.play(AudioName.WIN);
+    this.eventManager.emit(GameEvents.CARD_MOVED);
     this.eventManager.emit(GameEvents.UI_ANIMATE_WIN);
   }
 
