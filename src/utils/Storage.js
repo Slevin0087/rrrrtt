@@ -8,6 +8,7 @@ export class Storage {
       totalMoves: 0,
       cardsToFoundation: 0,
       highestScore: 0,
+      highestTime: '',
       fastestWin: Infinity,
       gamesPlayed: 0,
       cardsFlipped: 0,

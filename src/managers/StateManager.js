@@ -62,9 +62,9 @@ export class StateManager {
       this.resetLastMove();
     });
 
-    this.eventManager.on("settings:difficulty:change", (value) => {
+    this.eventManager.on(GameEvents.SET_DIFFICUTY_CHANGE, (value) => {
       this.state.settings.difficulty = value;
-      this.storage.saveGameSettings(this.state.settings);
+      this.saveGameSettings();
     });
 
     this.eventManager.on(GameEvents.GAME_END, () => {

@@ -42,7 +42,7 @@ export class AnimationSystem {
       this.animateUndoMove(moveData, callback)
     );
 
-    this.eventManager.on(GameEvents.UI_ANIMATE_DEAL_CARDS, () => this.dealCardsAnimation());
+    // this.eventManager.on(GameEvents.UI_ANIMATE_DEAL_CARDS, () => this.dealCardsAnimation());
 
     this.eventManager.on("ui:animate:win", () => this.playWinAnimation());
 

@@ -39,31 +39,27 @@ export class UISettingsPage {
     });
 
     this.elements.difficultySelect.addEventListener("change", (e) => {
-      this.eventManager.emit("settings:difficulty:change", e.target.value);
+      this.eventManager.emit(GameEvents.SET_DIFFICUTY_CHANGE, e.target.value);
     });
 
     this.elements.musicVolume.addEventListener("input", (e) => {
       const volume = Math.max(0, Math.min(1, e.target.value / 100));
       this.eventManager.emit(GameEvents.SET_MUSIC_VOLUME, parseFloat(volume));
       this.eventManager.emit(GameEvents.SETTINGS_MUSIC_VOLUME);
-      e.target.style.setProperty(
-        "--fill-percent",
-        `${e.target.value}%`
-      );
+      this.setPropertyStyleVolume(e.target);
     });
   }
 
   render() {
     const settings = this.state.settings;
-    console.log("settings:", settings);
 
     this.elements.soundToggle.checked = settings.soundEnabled;
+    console.log('this.elements.difficultySelect.value:', this.elements.difficultySelect.value);
+    console.log('settings.difficulty:', settings.difficulty);
+    
     this.elements.difficultySelect.value = settings.difficulty;
     this.elements.musicVolume.value = settings.musicVolume * 100;
-    this.elements.musicVolume.style.setProperty(
-      "--fill-percent",
-      `${this.elements.musicVolume.value}%`
-    );
+    this.setPropertyStyleVolume(this.elements.musicVolume);
   }
 
   saveSettings() {
@@ -85,5 +81,9 @@ export class UISettingsPage {
   hide() {
     this.page.classList.add("hidden");
     // await Animator.fadeOut(this.page);
+  }
+
+  setPropertyStyleVolume(element) {
+    element.style.setProperty("--fill-percent", `${element.value}%`);
   }
 }

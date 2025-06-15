@@ -36,7 +36,7 @@ export class UIGamePage {
     this.elements.restartGameBtn.addEventListener("click", () => {
       this.eventManager.emit(GameEvents.GAME_RESTART);
       this.updateScore(this.stateManager.state.game.score);
-      setTimeout(() => this.eventManager.emit(GameEvents.UI_ANIMATE_DEAL_CARDS), 1000);
+      // setTimeout(() => this.eventManager.emit(GameEvents.UI_ANIMATE_DEAL_CARDS), 1000);
     });
 
     this.elements.hintBtn.addEventListener("click", () => {

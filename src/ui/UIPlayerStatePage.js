@@ -32,9 +32,9 @@ export class UIPlayerStatePage {
   render() {
     const statePlayer = this.stateManager.state.player;
     // console.log('statePlayer:', statePlayer);
-    
-    const container = document.getElementById('player-state-content');
-    container.innerHTML = '';
+
+    const container = document.getElementById("player-state-content");
+    container.innerHTML = "";
     container.innerHTML = `<table class="p-state-table table">
       <tr>
         <td class="left-td">Имя:</td>
@@ -55,6 +55,10 @@ export class UIPlayerStatePage {
       <tr>
         <td class="left-td">Лучший счет:</td>
         <td class="right-td">${statePlayer.highestScore}</td>
+      </tr>
+      <tr>
+        <td class="left-td">Лучшее время:</td>
+        <td class="right-td"></td>
       </tr>`;
   }
 
