@@ -60,29 +60,6 @@ export class UIShop {
     );
   }
 
-  // render(shopState = this.stateManager.state.shop) {
-  //   console.log("в render:", this.stateManager);
-
-  //   // Очищаем контейнер
-  //   this.elements.itemsContainer.innerHTML = "";
-
-  //   // Устанавливаем активную категорию
-  //   this.setActiveCategory(shopState.currentCategory);
-
-  //   // Рендерим предметы текущей категории
-  //   const items = shopState.items.filter(
-  //     (item) => item.type === this.getTypeForCategory(shopState.currentCategory)
-  //   );
-
-  //   items.forEach((item) => {
-  //     const itemElement = this.createShopItemElement(item);
-  //     this.elements.itemsContainer.appendChild(itemElement);
-  //   });
-
-  //   // Обновляем баланс
-  //   this.updateBalance(shopState.balance);
-  // }
-
   render(shopState, shopConfig) {
     // Очищаем контейнер
     this.elements.itemsContainer.innerHTML = "";
@@ -97,112 +74,81 @@ export class UIShop {
     );
 
     items.forEach((item) => {
-      let itemElement = "";
-      switch (item.category) {
-        case "cardBack":
-          itemElement = this.createBackesItems(item);
-          this.elements.itemsContainer.append(itemElement);
-          itemElement.querySelectorAll(".shop-card").forEach((el) => {
-            Object.assign(el.style, item.styles);
-          });
-          break;
-        case "cardFace":
-          itemElement = this.createShopItemElement(item);
-          this.elements.itemsContainer.append(itemElement);
-          itemElement.querySelectorAll(".shop-card").forEach((el) => {
-            Object.assign(el.style, item.styles);
-          });
-          break;
-        case "background":
-          itemElement = this.createBackgroundFonsItems(item);
-          this.elements.itemsContainer.append(itemElement);
-      }
+      this.elements.itemsContainer.append(this.createShopItemElement(item));
     });
 
     // Обновляем баланс
     this.updateBalance(this.stateManager.state.player.coins);
   }
 
-  createBackesItems(item) {
-    const containerElement = document.createElement("div");
-    containerElement.className = "item-container";
-
-    const itemElement = document.createElement("div");
-    itemElement.className = `shop-item ${item.owned ? "owned" : ""}`;
-    itemElement.innerHTML = `
-    <div class="item-head">
-      <h3>${item.name}</h3>
-      <div class="item-preview" style="background: ${item.previewStyle}"></div>
-      <p>${item.description}</p>
-    </div>
-    <div class="shop-item-container">
-      <div class="shop-card"></div>
-      <div class="shop-card"></div>
-    </div>  
-    <button class="shop-action-btn" 
-    data-id="${item.id}" 
-    data-price="${item.price}">
-    ${item.owned ? "Применить" : `Купить (${item.price})`}
-    </button>
-    `;
-
-    containerElement.appendChild(itemElement);
-
-    const button = itemElement.querySelector(".shop-action-btn");
-    button.addEventListener("click", () => {
-      if (item.owned) {
-        this.eventManager.emit("shop:item:select", item.id);
-      } else {
-        this.eventManager.emit("shop:item:purchase", item.id);
-      }
-    });
-
-    return containerElement;
-  }
-
   createShopItemElement(item) {
-    // console.log("в createShopItemElement");
-
     const containerElement = document.createElement("div");
     containerElement.className = "item-container";
 
     const itemElement = document.createElement("div");
     itemElement.className = `shop-item ${item.owned ? "owned" : ""}`;
-    itemElement.innerHTML = `
-    <div class="item-head">
-      <h3>${item.name}</h3>
-      <div class="item-preview" style="background: ${item.previewStyle}"></div>
-      <p>${item.description}</p>
-    </div>
-    <div class="shop-item-container">
-      <div 
-          class="shop-card"
-          data-suit="♥"
-          data-value="A"
-          data-color="red"
-      >
-        <span class="shop-card-top-left value-red">A♥</span>
-        <span class="shop-card-center value-red">♥</span>
-        <span class="shop-card-bottom-right value-red">A♥</span>
-      </div>
-      <div
-          class="shop-card"
-          data-suit="♣"
-          data-value="K"
-          data-color="black"
-      >
-        <span class="shop-card-top-left value-black">K♣</span>
-        <span class="shop-card-center value-black">♣</span>
-        <span class="shop-card-bottom-right value-black">K♣</span>
-      </div>
-    </div>  
-    <button class="shop-action-btn" 
-    data-id="${item.id}" 
-    data-price="${item.price}">
-    ${item.owned ? "Применить" : `Купить (${item.price})`}
-    </button>
-    `;
+    const itemHead = document.createElement("div");
+    const itemName = document.createElement("h3");
+    const itemDescription = document.createElement("p");
+    const shopItemContainer = document.createElement("div");
+    const shopItem = document.createElement("div");
+    itemHead.classList.add("item-head");
+    shopItemContainer.classList.add("shop-item-container");
+    itemName.textContent = item.name;
+    itemDescription.textContent = item.description;
+    itemHead.append(itemName, itemDescription);
+    if (item.category === "cardFace" || item.category === "cardBack") {
+      const shopItem2 = document.createElement("div");
+      shopItem.classList.add("shop-item-card");
+      shopItem2.classList.add("shop-item-card");
+      // Применяем стили сразу
+      if (item.styles) {
+        Object.assign(shopItem.style, item.styles);
+        Object.assign(shopItem2.style, item.styles);
+      }
+      shopItemContainer.append(shopItem, shopItem2);
+      if (item.category === "cardFace") {
+        const topSymbolA = document.createElement("span");
+        topSymbolA.className = "shop-card-top-left value-red";
+        topSymbolA.textContent = "A♥";
 
+        const centerSymbolA = document.createElement("span");
+        centerSymbolA.className = "shop-card-center value-red";
+        centerSymbolA.textContent = "♥";
+
+        const bottomSymbolA = document.createElement("span");
+        bottomSymbolA.className = "shop-card-bottom-right value-red";
+        bottomSymbolA.textContent = "A♥";
+
+        const topSymbolK = document.createElement("span");
+        topSymbolK.className = "shop-card-top-left value-black";
+        topSymbolK.textContent = "K♥";
+
+        const centerSymbolK = document.createElement("span");
+        centerSymbolK.className = "shop-card-center value-black";
+        centerSymbolK.textContent = "♥";
+
+        const bottomSymbolK = document.createElement("span");
+        bottomSymbolK.className = "shop-card-bottom-right value-black";
+        bottomSymbolK.textContent = "K♥";
+
+        shopItem2.append(topSymbolK, centerSymbolK, bottomSymbolK);
+        shopItem.append(topSymbolA, centerSymbolA, bottomSymbolA);
+      }
+    } else if (item.category === "background") {
+      shopItem.classList.add("shop-item-fon");
+      if (item.styles) Object.assign(shopItem.style, item.styles);
+      else {
+        const img = document.createElement("img");
+        img.src = item.previewImage;
+        shopItem.append(img);
+      }
+    }
+    shopItemContainer.append(shopItem);
+    const btn = document.createElement("button");
+    btn.classList.add("shop-action-btn");
+    btn.textContent = `${item.owned ? "Применить" : `Купить (${item.price})`}`;
+    itemElement.append(itemHead, shopItemContainer, btn);
     containerElement.appendChild(itemElement);
 
     const button = itemElement.querySelector(".shop-action-btn");
@@ -216,46 +162,41 @@ export class UIShop {
 
     return containerElement;
   }
-
-  createBackgroundFonsItems(item) {
-    const containerElement = document.createElement("div");
-    containerElement.className = "item-container";
-
-    const itemElement = document.createElement("div");
-    itemElement.className = `shop-item ${item.owned ? "owned" : ""}`;
-    itemElement.innerHTML = `
-    <div class="item-head">
-      <h3>${item.name}</h3>
-      <div class="item-preview" style="background: ${item.previewStyle}"></div>
-      <p>${item.description}</p>
-    </div>
-    <div class="shop-item-container">
-      <img src=${item.previewImage} />
-    </div>  
-    <button class="shop-action-btn" 
-    data-id="${item.id}" 
-    data-price="${item.price}">
-    ${item.owned ? "Применить" : `Купить (${item.price})`}
-    </button>
-    `;
-
-    containerElement.appendChild(itemElement);
-
-    const button = itemElement.querySelector(".shop-action-btn");
-    button.addEventListener("click", () => {
-      if (item.owned) {
-        this.eventManager.emit("shop:item:select", item.id);
-      } else {
-        this.eventManager.emit("shop:item:purchase", item.id);
-      }
-    });
-
-    return containerElement;
-  }
+  // itemElement.innerHTML = `
+  // <div class="item-head">
+  //   <h3>${item.name}</h3>
+  //   <p>${item.description}</p>
+  // </div>
+  // <div class="shop-item-container">
+  //   <div
+  //       class="shop-card"
+  //       data-suit="♥"
+  //       data-value="A"
+  //       data-color="red"
+  //   >
+  //     <span class="shop-card-top-left value-red">A♥</span>
+  //     <span class="shop-card-center value-red">♥</span>
+  //     <span class="shop-card-bottom-right value-red">A♥</span>
+  //   </div>
+  //   <div
+  //       class="shop-card"
+  //       data-suit="♣"
+  //       data-value="K"
+  //       data-color="black"
+  //   >
+  //     <span class="shop-card-top-left value-black">K♣</span>
+  //     <span class="shop-card-center value-black">♣</span>
+  //     <span class="shop-card-bottom-right value-black">K♣</span>
+  //   </div>
+  // </div>
+  // <button class="shop-action-btn"
+  // data-id="${item.id}"
+  // data-price="${item.price}">
+  // ${item.owned ? "Применить" : `Купить (${item.price})`}
+  // </button>
+  // `;
 
   setActiveCategory(category) {
-    // console.log("в setActiveCategory:", category);
-
     // Обновляем кнопки
     Object.values(this.elements.categoryButtons).forEach((btn) => {
       btn.classList.remove("active-shop-btn");

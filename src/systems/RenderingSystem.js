@@ -143,9 +143,8 @@ export class RenderingSystem {
     });
     // Рендерим карты
     this.renderCards(deck, tableaus, stock, foundations);
-    
   }
-  
+
   renderCards(deck, tableaus, stock, foundations) {
     // Очищаем старые карты
     this.clearAllCards();
@@ -310,20 +309,6 @@ export class RenderingSystem {
     cardElement.dataset.value = card.value;
 
     // Создаем элементы для символов карты
-    const topSymbol = document.createElement("span");
-    topSymbol.className = "card-symbol top";
-    topSymbol.textContent = card.getSymbol();
-
-    const centerSymbol = document.createElement("span");
-    centerSymbol.className = "card-symbol center";
-    centerSymbol.textContent = card.suit;
-
-    const bottomSymbol = document.createElement("span");
-    bottomSymbol.className = "card-symbol bottom";
-    bottomSymbol.textContent = card.getSymbol();
-
-    // Собираем карту
-    cardElement.append(topSymbol, centerSymbol, bottomSymbol);
 
     // Настройка рубашки/лица
     if (!card.faceUp) {
@@ -332,6 +317,20 @@ export class RenderingSystem {
         this.stateManager.state.settings.cardBackStyle
       );
     } else {
+      const topSymbol = document.createElement("span");
+      topSymbol.className = "card-symbol top";
+      topSymbol.textContent = card.getSymbol();
+
+      const centerSymbol = document.createElement("span");
+      centerSymbol.className = "card-symbol center";
+      centerSymbol.textContent = card.suit;
+
+      const bottomSymbol = document.createElement("span");
+      bottomSymbol.className = "card-symbol bottom";
+      bottomSymbol.textContent = card.getSymbol();
+
+      // Собираем карту
+      cardElement.append(topSymbol, centerSymbol, bottomSymbol);
       cardElement.classList.add(this.stateManager.state.settings.cardFaceStyle);
     }
 
