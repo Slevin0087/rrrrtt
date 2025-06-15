@@ -44,9 +44,8 @@ export class UIShop {
     });
 
     Object.entries(this.elements.categoryButtons).forEach(([category, btn]) => {
-      
       btn.addEventListener("click", () => {
-        console.log('category:', typeof category);
+        console.log("category:", typeof category);
         this.eventManager.emit(GameEvents.SHOP_CATEGORY_CHANGE, category);
         this.render(this.stateManager.state.shop, ShopConfig);
       });
@@ -96,51 +95,70 @@ export class UIShop {
       (item) =>
         item.category === this.getTypeForCategory(shopState.currentCategory)
     );
-    // console.log("items:", items);
 
     items.forEach((item) => {
-      // console.log("dddddddddddddddddddddddddd");
-      const itemElement = this.createShopItemElement(item);
-      this.elements.itemsContainer.append(itemElement);
+      let itemElement = "";
+      switch (item.category) {
+        case "cardBack":
+          itemElement = this.createBackesItems(item);
+          this.elements.itemsContainer.append(itemElement);
+          itemElement.querySelectorAll(".shop-card").forEach((el) => {
+            Object.assign(el.style, item.styles);
+          });
+          break;
+        case "cardFace":
+          itemElement = this.createShopItemElement(item);
+          this.elements.itemsContainer.append(itemElement);
+          itemElement.querySelectorAll(".shop-card").forEach((el) => {
+            Object.assign(el.style, item.styles);
+          });
+          break;
+        case "background":
+          itemElement = this.createBackgroundFonsItems(item);
+          this.elements.itemsContainer.append(itemElement);
+      }
     });
 
     // Обновляем баланс
-    // this.updateBalance(shopState.balance);
     this.updateBalance(this.stateManager.state.player.coins);
   }
 
-  // <div class="item-container" id="classic-skin">
-  //         <p>Классический</p>
-  //         <div class="shop-card-container">
-  //           <div class="item" data-style="classic" id="classic-skin-1">
-  //             <div
-  //               class="shop-card"
-  //               data-suit="♥"
-  //               data-value="A"
-  //               data-color="red"
-  //             >
-  //               <span class="shop-card-top-left value-red">A♥</span>
-  //               <span class="shop-card-center value-red">♥</span>
-  //               <span class="shop-card-bottom-right value-red">A♥</span>
-  //             </div>
-  //           </div>
-  //           <div class="item" data-style="classic" id="classic-skin-2">
-  //             <div
-  //               class="shop-card"
-  //               data-suit="♣"
-  //               data-value="K"
-  //               data-color="black"
-  //             >
-  //               <span class="shop-card-top-left value-black">K♣</span>
-  //               <span class="shop-card-center value-black">♣</span>
-  //               <span class="shop-card-bottom-right value-black">K♣</span>
-  //             </div>
-  //           </div>
-  //         </div>
-  //         <button class="buy-btn" data-style-btn="classic-fup" data-price="0">
-  //           Выбрать
-  //         </button>
-  //       </div>
+  createBackesItems(item) {
+    const containerElement = document.createElement("div");
+    containerElement.className = "item-container";
+
+    const itemElement = document.createElement("div");
+    itemElement.className = `shop-item ${item.owned ? "owned" : ""}`;
+    itemElement.innerHTML = `
+    <div class="item-head">
+      <h3>${item.name}</h3>
+      <div class="item-preview" style="background: ${item.previewStyle}"></div>
+      <p>${item.description}</p>
+    </div>
+    <div class="shop-item-container">
+      <div class="shop-card"></div>
+      <div class="shop-card"></div>
+    </div>  
+    <button class="shop-action-btn" 
+    data-id="${item.id}" 
+    data-price="${item.price}">
+    ${item.owned ? "Применить" : `Купить (${item.price})`}
+    </button>
+    `;
+
+    containerElement.appendChild(itemElement);
+
+    const button = itemElement.querySelector(".shop-action-btn");
+    button.addEventListener("click", () => {
+      if (item.owned) {
+        this.eventManager.emit("shop:item:select", item.id);
+      } else {
+        this.eventManager.emit("shop:item:purchase", item.id);
+      }
+    });
+
+    return containerElement;
+  }
 
   createShopItemElement(item) {
     // console.log("в createShopItemElement");
@@ -177,6 +195,42 @@ export class UIShop {
         <span class="shop-card-center value-black">♣</span>
         <span class="shop-card-bottom-right value-black">K♣</span>
       </div>
+    </div>  
+    <button class="shop-action-btn" 
+    data-id="${item.id}" 
+    data-price="${item.price}">
+    ${item.owned ? "Применить" : `Купить (${item.price})`}
+    </button>
+    `;
+
+    containerElement.appendChild(itemElement);
+
+    const button = itemElement.querySelector(".shop-action-btn");
+    button.addEventListener("click", () => {
+      if (item.owned) {
+        this.eventManager.emit("shop:item:select", item.id);
+      } else {
+        this.eventManager.emit("shop:item:purchase", item.id);
+      }
+    });
+
+    return containerElement;
+  }
+
+  createBackgroundFonsItems(item) {
+    const containerElement = document.createElement("div");
+    containerElement.className = "item-container";
+
+    const itemElement = document.createElement("div");
+    itemElement.className = `shop-item ${item.owned ? "owned" : ""}`;
+    itemElement.innerHTML = `
+    <div class="item-head">
+      <h3>${item.name}</h3>
+      <div class="item-preview" style="background: ${item.previewStyle}"></div>
+      <p>${item.description}</p>
+    </div>
+    <div class="shop-item-container">
+      <img src=${item.previewImage} />
     </div>  
     <button class="shop-action-btn" 
     data-id="${item.id}" 

@@ -147,6 +147,14 @@
   text-align: center; /* Центрируем текст по горизонтали */
 }
 
+.value-red {
+  color: red;
+}
+
+.value-black {
+  color: black;
+}
+
 .shop-card-bottom-right {
   font-size: var(--font-size-tbcard-vSh);
   /* height: max-content; */

@@ -253,6 +253,7 @@ export class GameLogicSystem {
       GameEvents.ANIMATION_COINS_EARNED,
       `Вы заработали ${GameConfig.earnedCoins.win} хусынок`
     );
+    this.eventManager.emit(GameEvents.GAME_END);
   }
 
   provideHint() {

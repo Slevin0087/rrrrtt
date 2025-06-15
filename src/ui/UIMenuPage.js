@@ -4,9 +4,6 @@ export class UIMenuPage {
   constructor(eventManager, stateManager) {
     this.eventManager = eventManager;
     this.stateManager = stateManager;
-    this.isRunningGame = false;
-    // console.log('this.isRunningGame:', this.isRunningGame);
-    
     this.page = document.getElementById("game-menu");
     this.displayPage = "";
     this.elements = {
@@ -60,9 +57,9 @@ export class UIMenuPage {
 
   show() {
     console.log('swoooooooooooooooooooooooooooooooow MENU');
-    
-    this.isRunningGame = this.stateManager.state.game.isRunning;
-    this.elements.continueBtn.style.display = this.isRunningGame ? "block" : "none";
+    if (this.stateManager.state.game.isRunning) {
+      this.elements.continueBtn.style.display = "block";
+    } else this.elements.continueBtn.style.display = "none";
     this.page.classList.remove("hidden");
   }
 
