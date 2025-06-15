@@ -26,6 +26,16 @@ export class AnimationSystem {
         }, 200);
       }
     );
+
+    this.eventManager.on(
+      GameEvents.ANIMATION_COINS_EARNED,
+      (text) => {
+        setTimeout(() => {
+          Animator.animationCoinsEarned(text);
+        }, 200);
+      }
+    );
+
     this.eventManager.on("ui:animate:move", (card, from, to, callback) =>
       this.animateCardMove(card, from, to, callback)
     );

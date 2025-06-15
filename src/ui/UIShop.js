@@ -44,15 +44,16 @@ export class UIShop {
     });
 
     Object.entries(this.elements.categoryButtons).forEach(([category, btn]) => {
-      // console.log('category:', typeof category);
-
+      
       btn.addEventListener("click", () => {
-        this.eventManager.emit("shop:category:change", category, ShopConfig);
+        console.log('category:', typeof category);
+        this.eventManager.emit(GameEvents.SHOP_CATEGORY_CHANGE, category);
+        this.render(this.stateManager.state.shop, ShopConfig);
       });
     });
 
     // this.eventManager.on("shop:render", (shopState) => this.render(shopState));
-    this.eventManager.on("shop:render", (shopState, config) =>
+    this.eventManager.on(GameEvents.SHOP_RENDER, (shopState, config) =>
       this.render(shopState, config)
     );
     this.eventManager.on("shop:balance:update", (balance) =>

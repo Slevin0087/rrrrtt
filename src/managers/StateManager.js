@@ -34,6 +34,11 @@ export class StateManager {
       this.savePlayerStats(this.state.player);
     });
 
+    this.eventManager.on(GameEvents.INCREMENT_COINS, (coins) => {
+      this.state.player.coins += coins;
+      this.savePlayerStats(this.state.player);
+    });
+
     this.eventManager.on(
       GameEvents.SET_ACTIV_PAGE,
       (page) => (this.state.ui.activePage = page)
@@ -90,10 +95,16 @@ export class StateManager {
       this.saveGameSettings();
     });
 
-    this.eventManager.on(GameEvents.SET_MUSIC_VOLUME, (value) => {     
+    this.eventManager.on(GameEvents.SET_MUSIC_VOLUME, (value) => {
       this.state.settings.musicVolume = value;
       this.saveGameSettings();
     });
+
+    this.eventManager.on(GameEvents.SHOP_CATEGORY_CHANGE, (category) => {
+      this.state.shop.currentCategory = category;
+      this.saveShopStats();
+    }
+    );
   }
 
   getAllData() {
@@ -156,6 +167,10 @@ export class StateManager {
     this.storage.setGameSettings(this.state.settings);
   }
 
+  saveShopStats() {
+    this.storage.setShopStats(this.state.shop);
+  }
+
   resetScore(score) {
     this.state.game.score = score;
   }
@@ -210,17 +225,17 @@ export class StateManager {
     this.state.game.lastMove = null;
   }
 
-  updateScore(points) {   
+  updateScore(points) {
     this.state.game.score += points;
     if (this.state.game.score > this.state.player.highestScore) {
       this.state.player.highestScore = this.state.game.score;
       this.storage.setPlayerStats(this.state.player);
     }
-    
+
     this.eventManager.emit(GameEvents.SCORE_UPDATE, this.state.game.score);
   }
 
-  incrementStat(statName, amount = 1) {   
+  incrementStat(statName, amount = 1) {
     if (this.state.player[statName] !== undefined) {
       this.state.player[statName] += amount;
     }

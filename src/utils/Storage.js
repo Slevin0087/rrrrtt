@@ -8,7 +8,7 @@ export class Storage {
       totalMoves: 0,
       cardsToFoundation: 0,
       highestScore: 0,
-      highestTime: '',
+      highestTime: "",
       fastestWin: Infinity,
       gamesPlayed: 0,
       cardsFlipped: 0,
@@ -146,7 +146,7 @@ export class Storage {
   }
 
   getPlayerStats() {
-    try {      
+    try {
       const state = JSON.parse(localStorage.getItem("playerStats"));
       return state || this.defaultPlayerStats;
     } catch (e) {
@@ -310,7 +310,6 @@ export class Storage {
   }
 
   setPlayerStats(stats) {
-    
     const storage = JSON.parse(localStorage.getItem("playerStats"));
     // console.log("в setPlayerStats", storage);
     const playerStats = {
@@ -319,6 +318,15 @@ export class Storage {
     };
     localStorage.setItem("playerStats", JSON.stringify(playerStats));
     // console.log("в setPlayerStats", playerStats);
+  }
+
+  setShopStats(stats) {
+    const storage = JSON.parse(localStorage.getItem("shopStats"));
+    const shopStats = {
+      ...storage,
+      ...stats,
+    };
+    localStorage.setItem("shopStats", JSON.stringify(shopStats));
   }
 
   // === Session Data ===

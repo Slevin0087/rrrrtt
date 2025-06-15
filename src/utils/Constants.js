@@ -63,6 +63,10 @@ export const GameEvents = {
   STOCK_CLICK: "stock:click",
   SCORE_UPDATE: "game:score:update",
   TIME_UPDATE: "game:time:update",
+  INCREMENT_COINS: "increment:coins",
+  ANIMATION_COINS_EARNED: "animation:coins:earned",
+  SHOP_CATEGORY_CHANGE: "shop:category:change",
+  SHOP_RENDER: "shop:render",
 };
 
 export const AnimationDurations = {

@@ -1,4 +1,8 @@
 export const GameConfig = {
+  earnedCoins: {
+    win: 10,
+  },
+
   rules: {
     initialScore: 0,
     scoreForFoundation: 10,

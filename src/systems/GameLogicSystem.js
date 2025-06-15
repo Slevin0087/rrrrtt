@@ -245,6 +245,14 @@ export class GameLogicSystem {
     this.audioManager.play(AudioName.WIN);
     this.eventManager.emit(GameEvents.CARD_MOVED);
     this.eventManager.emit(GameEvents.UI_ANIMATE_WIN);
+    this.eventManager.emit(
+      GameEvents.INCREMENT_COINS,
+      GameConfig.earnedCoins.win
+    );
+    this.eventManager.emit(
+      GameEvents.ANIMATION_COINS_EARNED,
+      `Вы заработали ${GameConfig.earnedCoins.win} хусынок`
+    );
   }
 
   provideHint() {
