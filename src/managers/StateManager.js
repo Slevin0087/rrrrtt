@@ -105,6 +105,8 @@ export class StateManager {
       this.saveShopStats();
     }
     );
+
+    this.eventManager.on(GameEvents.SET_SHOP_STATS, () => this.saveShopStats());
   }
 
   getAllData() {

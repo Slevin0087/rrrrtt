@@ -34,6 +34,7 @@ export const GameEvents = {
   UI_NAME_HIDE: "ui:name:hide",
   SET_ACTIV_PAGE: "set:activ:page",
   PLAYER_NAME_SET: "player:name:set",
+  SET_SHOP_STATS: "set:shop:stats",
   END_SET_NEW_GAME: "end:set:new:game",
   SET_CURRENT_GAME: "set:current:game",
   SETTINGS_MUSIC_VOLUME: "settings:music:volume",
@@ -67,6 +68,8 @@ export const GameEvents = {
   ANIMATION_COINS_EARNED: "animation:coins:earned",
   SHOP_CATEGORY_CHANGE: "shop:category:change",
   SHOP_RENDER: "shop:render",
+  UI_NOTIFICATION: "ui:notification",
+  SHOP_ITEM_PURCHASE: "shop:item:purchase",
 };
 
 export const AnimationDurations = {

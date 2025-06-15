@@ -15,13 +15,19 @@ export class ShopSystem {
   init() {
     this.setupEventListeners();
     this.loadShopItems();
+    console.log("ЫРЩЗЫНЫЕУЬ ШТШЕ");
   }
 
   setupEventListeners() {
     this.eventManager.on("shop:item:select", (itemId) =>
       this.handleItemSelect(itemId)
     );
-    this.eventManager.on("shop:item:purchase", (itemId) => this.purchaseItem(itemId));
+    // this.eventManager.on(GameEvents.SHOP_ITEM_PURCHASE, (itemId) =>
+    //   this.purchaseItem(itemId)
+    // );
+    this.eventManager.on(GameEvents.SHOP_ITEM_PURCHASE, (item) =>
+      this.purchaseItem(item)
+    );
   }
 
   loadShopItems() {
@@ -44,48 +50,116 @@ export class ShopSystem {
 
     if (item.owned) {
       this.applyItem(item);
-      this.eventManager.emit("ui:notification", `Стиль "${item.name}" применен`);
+      this.eventManager.emit(
+        "ui:notification",
+        `Стиль "${item.name}" применен`
+      );
     } else {
       this.eventManager.emit("shop:item:preview", item);
     }
   }
 
-  purchaseItem(itemId) {
-    const item = this.stateManager.shop.items.find((i) => i.id === itemId);
-    if (!item || item.owned) return;
+  // purchaseItem(itemId) {
+  //   console.log("в purchaseItem:", itemId);
 
-    if (this.stateManager.shop.balance >= item.price) {
-      this.stateManager.shop.balance -= item.price;
+  //   // const item = this.stateManager.shop.items.find((i) => i.id === itemId);
+  //   const item = ShopConfig.items.find((i) => i.id === itemId);
+  //   console.log("item:", item);
+
+  //   if (!item || item.owned) return;
+  //   console.log(
+  //     "в purchaseItem this.stateManager.shop.balance:",
+  //     this.stateManager.shop.balance
+  //   );
+  //   if (this.stateManager.shop.balance >= item.price) {
+  //     this.stateManager.shop.balance -= item.price;
+  //     item.owned = true;
+
+  //     // this.storage.saveCoins(this.stateManager.shop.balance);
+  //     // this.storage.addPurchasedItem(itemId);
+
+  //     this.applyItem(item);
+  //     this.eventManager.emit(
+  //       GameEvents.UI_NOTIFICATION,
+  //       `Стиль "${item.name}" куплен и применен`
+  //     );
+  //   } else {
+  //     this.eventManager.emit(
+  //       GameEvents.UI_NOTIFICATION,
+  //       "Недостаточно хусынок"
+  //     );
+  //   }
+  // }
+
+    purchaseItem(item) {
+    console.log("в purchaseItem:", item);
+
+    // const item = this.stateManager.shop.items.find((i) => i.id === itemId);
+    // const item = ShopConfig.items.find((i) => i.id === itemId);
+    // console.log("item:", item);
+
+    if (!item || item.owned) return;
+    console.log(
+      "в purchaseItem this.stateManager.shop.balance:",
+      this.stateManager
+    );
+    if (this.stateManager.state.shop.balance >= item.price) {
+      this.stateManager.state.shop.balance -= item.price;
       item.owned = true;
 
-      this.storage.saveCoins(this.stateManager.shop.balance);
-      this.storage.addPurchasedItem(itemId);
+      // this.storage.saveCoins(this.stateManager.state.shop.balance);
+      // this.storage.addPurchasedItem(itemId);
 
       this.applyItem(item);
       this.eventManager.emit(
-        "ui:notification",
+        GameEvents.UI_NOTIFICATION,
         `Стиль "${item.name}" куплен и применен`
       );
     } else {
-      this.eventManager.emit("ui:notification", "Недостаточно монет", "error");
+      this.eventManager.emit(
+        GameEvents.UI_NOTIFICATION,
+        "Недостаточно хусынок"
+      );
     }
   }
 
-  applyItem(item) {
+  // applyItem(item) {
+  //   switch (item.type) {
+  //     case "cardFace":
+  //       this.stateManager.state.shop.cardFaceStyle = item.styleClass;
+  //     this.stateManager.state.shop.selectedItems.
+  //       break;
+  //     case "cardBack":
+  //       this.stateManager.state.settings.cardBackStyle = item.styleClass;
+  //       break;
+  //     case "background":
+  //       this.stateManager.state.settings.backgroundImage = item.imageUrl;
+  //       break;
+  //   }
+
+  //   // this.storage.saveGameSettings(this.stateManager.state.settings);
+  //   this.eventManager.emit(
+  //     "game:settings:update",
+  //     this.stateManager.state.settings
+  //   );
+  // }
+
+    applyItem(item) {
     switch (item.type) {
-      case "cardFace":
-        this.stateManager.state.settings.cardFaceStyle = item.styleClass;
+      case "faces":
+        this.stateManager.state.shop.cardFaceStyle = item.styleClass;
+      this.stateManager.state.shop.selectedItems.cardFace = item;
         break;
-      case "cardBack":
-        this.stateManager.state.settings.cardBackStyle = item.styleClass;
+      case "backs":
+        this.stateManager.state.shop.selectedItems.cardBack = item;
         break;
-      case "background":
-        this.stateManager.state.settings.backgroundImage = item.imageUrl;
+      case "backgrounds":
+        this.stateManager.state.shop.selectedItems.background = item;
         break;
     }
 
-    this.storage.saveGameSettings(this.stateManager.state.settings);
-    this.eventManager.emit("game:settings:update", this.stateManager.state.settings);
+    // this.storage.saveGameSettings(this.stateManager.state.settings);
+    this.eventManager.emit(GameEvents.SET_SHOP_STATS);
   }
 
   changeCategory(category, shopConfig) {
@@ -97,6 +171,9 @@ export class ShopSystem {
 
     this.stateManager.shop.balance += amount;
     this.storage.saveCoins(this.stateManager.shop.balance);
-    this.eventManager.emit("shop:balance:update", this.stateManager.shop.balance);
+    this.eventManager.emit(
+      "shop:balance:update",
+      this.stateManager.shop.balance
+    );
   }
 }

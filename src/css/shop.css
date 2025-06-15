@@ -167,6 +167,12 @@
   transform: rotate(180deg);
 }
 
+.shop-item-fon {
+  background: red;
+  width: 100%;
+  height: 100%;
+}
+
 @media (min-width: 350px) {
   .shop button {
     font-size: var(--font-size-shop-350px);

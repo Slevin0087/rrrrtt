@@ -100,6 +100,19 @@ export class UIGamePage {
     console.log("SHOOOOOOOOOOOOOOOOOOW GAME");
 
     this.page.classList.remove("hidden");
+    this.page
+    const styles = this.stateManager.state.shop.selectedItems.background.styles;
+    const previewImage = this.stateManager.state.shop.selectedItems.background.previewImage;
+    console.log('styles, previewImage:', styles, previewImage);
+    
+    if (styles) {
+      Object.assign(this.page.style, styles);
+      console.log('iffffffffff', this.page.style);
+      
+    } else if (previewImage !== "") {
+      console.log('else if (previewImage !== "")');
+      
+    }
     this.updateUI();
   }
 

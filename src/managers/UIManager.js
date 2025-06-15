@@ -5,6 +5,7 @@ import { UIGamePage } from "../ui/UIGamePage.js";
 import { UISettingsPage } from "../ui/UISettingsPage.js";
 import { UIPlayerStatePage } from "../ui/UIPlayerStatePage.js";
 import { UIShop } from "../ui/UIShop.js";
+import { UINotification } from "../ui/UINotification.js";
 
 export class UIManager {
   constructor(eventManager, stateManager) {
@@ -33,6 +34,7 @@ export class UIManager {
         this.eventManager,
         this.stateManager
       ),
+      uiNotification: new UINotification(this.eventManager),
     };
   }
 
@@ -104,6 +106,10 @@ export class UIManager {
       this.components.uiGamePage.show();
       this.stateManager.state.ui.activePage = this.components.uiGamePage;
       this.stateManager.state.game.isRunning = true;
+    });
+
+    this.eventManager.on(GameEvents.UI_NOTIFICATION, (message, type = "info") => {
+      this.components.uiNotification.addToQueue(message, type);
     });
   }
 

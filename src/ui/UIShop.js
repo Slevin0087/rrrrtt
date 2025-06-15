@@ -138,7 +138,7 @@ export class UIShop {
     } else if (item.category === "background") {
       shopItem.classList.add("shop-item-fon");
       if (item.styles) Object.assign(shopItem.style, item.styles);
-      else {
+      else if (item.previewImage) {
         const img = document.createElement("img");
         img.src = item.previewImage;
         shopItem.append(img);
@@ -153,10 +153,15 @@ export class UIShop {
 
     const button = itemElement.querySelector(".shop-action-btn");
     button.addEventListener("click", () => {
+      console.log('КЛИК ПО КНОПКЕ:', item.owned);
+      
       if (item.owned) {
         this.eventManager.emit("shop:item:select", item.id);
       } else {
-        this.eventManager.emit("shop:item:purchase", item.id);
+        console.log('В ELSE');
+        
+        // this.eventManager.emit(GameEvents.SHOP_ITEM_PURCHASE, item.id);
+        this.eventManager.emit(GameEvents.SHOP_ITEM_PURCHASE, item);
       }
     });
 
