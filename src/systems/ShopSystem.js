@@ -71,15 +71,15 @@ export class ShopSystem {
       this.applyItem(item);
 
       this.stateManager.savePlayerStats();
-      this.eventManager.emit(
-        GameEvents.UI_NOTIFICATION,
-        `Стиль "${item.name}" куплен и применен`
-      );
+      // this.eventManager.emit(
+      //   GameEvents.UI_NOTIFICATION,
+      //   `Стиль "${item.name}" куплен и применен`
+      // );
     } else {
-      this.eventManager.emit(
-        GameEvents.UI_NOTIFICATION,
-        "Недостаточно хусынок"
-      );
+      // this.eventManager.emit(
+      //   GameEvents.UI_NOTIFICATION,
+       alert( "Недостаточно хусынок");
+      // );
     }
   }
 
