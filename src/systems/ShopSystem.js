@@ -103,8 +103,8 @@ export class ShopSystem {
       "в purchaseItem this.stateManager.shop.balance:",
       this.stateManager
     );
-    if (this.stateManager.state.shop.balance >= item.price) {
-      this.stateManager.state.shop.balance -= item.price;
+    // if (this.stateManager.state.shop.balance >= item.price) {
+    //   this.stateManager.state.shop.balance -= item.price;
       item.owned = true;
 
       // this.storage.saveCoins(this.stateManager.state.shop.balance);
@@ -115,12 +115,12 @@ export class ShopSystem {
         GameEvents.UI_NOTIFICATION,
         `Стиль "${item.name}" куплен и применен`
       );
-    } else {
-      this.eventManager.emit(
-        GameEvents.UI_NOTIFICATION,
-        "Недостаточно хусынок"
-      );
-    }
+    // } else {
+    //   this.eventManager.emit(
+    //     GameEvents.UI_NOTIFICATION,
+    //     "Недостаточно хусынок"
+    //   );
+    // }
   }
 
   // applyItem(item) {

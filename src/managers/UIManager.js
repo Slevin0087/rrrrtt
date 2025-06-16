@@ -41,7 +41,7 @@ export class UIManager {
   setupEventListeners() {
     this.eventManager.on(GameEvents.FULL_SCREEN_BTN, (e) => {
       this.toggleFullscreen(e.target);
-    })
+    });
     this.eventManager.on(GameEvents.UI_NAME_HIDE, () => {
       this.hideAll(this.components.uiNamePage);
       this.components.uiMenuPage.show();
@@ -108,26 +108,65 @@ export class UIManager {
       this.stateManager.state.game.isRunning = true;
     });
 
-    this.eventManager.on(GameEvents.UI_NOTIFICATION, (message, type = "info") => {
-      this.components.uiNotification.addToQueue(message, type);
-    });
+    this.eventManager.on(
+      GameEvents.UI_NOTIFICATION,
+      (message, type = "info") => {
+        this.components.uiNotification.addToQueue(message, type);
+      }
+    );
   }
 
-  toggleFullscreen(fullScreenBtn) {
-    console.log("заход в функцию, полный экран");
-    // const fullScreenBtn = document.getElementById("full-screen-btn");
+  // toggleFullscreen(fullScreenBtn) {
+  //   console.log("заход в функцию, полный экран");
+  //   // const fullScreenBtn = document.getElementById("full-screen-btn");
 
-    if (!document.fullscreenElement) {
-      // Запуск полноэкранного режима
-      document.documentElement.requestFullscreen().catch((err) => {
-        console.error(`Ошибка при переходе в полноэкранный режим: ${err}`);
-      });
-      if (fullScreenBtn.textContent === "[ ]") fullScreenBtn.textContent = "_";
+  //   if (!document.fullscreenElement) {
+  //     // Запуск полноэкранного режима
+  //     document.documentElement.requestFullscreen().catch((err) => {
+  //       console.error(`Ошибка при переходе в полноэкранный режим: ${err}`);
+  //     });
+  //     if (fullScreenBtn.textContent === "[ ]") fullScreenBtn.textContent = "_";
+  //   } else {
+  //     // Выход из полноэкранного режима
+  //     if (document.exitFullscreen) {
+  //       document.exitFullscreen();
+  //       if (fullScreenBtn.textContent === "_") fullScreenBtn.textContent = "[ ]";
+  //     }
+  //   }
+  // }
+
+  toggleFullscreen(fullScreenBtn) {
+    // Проверяем iOS/Safari
+    const isIOS =
+      /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+
+    if (isIOS) {
+      // Особый случай для iOS
+      const elem = document.documentElement;
+
+      if (elem.webkitSupportsFullscreen) {
+        if (!elem.webkitDisplayingFullscreen) {
+          elem.webkitRequestFullscreen();
+          fullScreenBtn.textContent = "_";
+        } else {
+          document.webkitExitFullscreen();
+          fullScreenBtn.textContent = "[ ]";
+        }
+      } else {
+        // Fallback для старых версий iOS
+        alert("Полноэкранный режим не поддерживается в вашем браузере");
+      }
     } else {
-      // Выход из полноэкранного режима
-      if (document.exitFullscreen) {
+      // Оригинальный код для других платформ
+      if (!document.fullscreenElement) {
+        document.documentElement
+          .requestFullscreen()
+          .then(() => (fullScreenBtn.textContent = "_"))
+          .catch((err) => console.error("Fullscreen error:", err));
+      } else {
         document.exitFullscreen();
-        if (fullScreenBtn.textContent === "_") fullScreenBtn.textContent = "[ ]";
+        fullScreenBtn.textContent = "[ ]";
       }
     }
   }
