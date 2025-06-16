@@ -53,7 +53,7 @@ export class Storage {
     };
 
     this.defaultSettingsStats = {
-      soundEnabled: true,
+      soundEnabled: false,
       theme: "default",
       language: "ru",
       musicVolume: 0.2,
