@@ -83,10 +83,10 @@ export class UIShop {
 
   createShopItemElement(item) {
     const containerElement = document.createElement("div");
-    containerElement.className = "item-container";
+    containerElement.className = `item-container ${item.owned ? "owned" : ""}`;
 
     const itemElement = document.createElement("div");
-    itemElement.className = `shop-item ${item.owned ? "owned" : ""}`;
+    itemElement.className = "shop-item";
     const itemHead = document.createElement("div");
     const itemName = document.createElement("h3");
     const itemDescription = document.createElement("p");
@@ -145,31 +145,55 @@ export class UIShop {
       }
     }
     shopItemContainer.append(shopItem);
-    const btn = document.createElement("button");
-    btn.classList.add("shop-action-btn");
-    btn.textContent = `${item.owned ? "Применить" : `Купить (${item.price})`}`;
-    itemElement.append(itemHead, shopItemContainer, btn);
-    containerElement.appendChild(itemElement);
 
-    const button = itemElement.querySelector(".shop-action-btn");
-    button.addEventListener("click", () => {
-      console.log('КЛИК ПО КНОПКЕ:', item.owned);
-      
-      if (item.owned) {
-        this.eventManager.emit("shop:item:select", item.id);
-      } else {
-        console.log('В ELSE');
-        
-        // this.eventManager.emit(GameEvents.SHOP_ITEM_PURCHASE, item.id);
-        this.eventManager.emit(GameEvents.SHOP_ITEM_PURCHASE, item);
-        if (this.getItemType(item.type) === "faces" || this.getItemType(item.type) === "backs") {
+    const btnOrCircle = this.creatBuyBtn(item);
 
-          this.eventManager.emit(GameEvents.RENDER_CARDS);
-        }
-      }
-    });
+    itemElement.append(itemHead, shopItemContainer, btnOrCircle);
+    containerElement.append(itemElement);
 
     return containerElement;
+  }
+
+  creatBuyBtn(item) {
+    console.log("В СОЗДАНИИ КНОПОК");
+    if (item.owned && item.isBought) {
+      const checkmarkCircle = document.createElement("div");
+      const checkmark = document.createElement("div");
+      checkmarkCircle.classList.add("checkmark-circle");
+      checkmark.classList.add("checkmark");
+      checkmarkCircle.append(checkmark);
+      return checkmarkCircle;
+    } else {
+      const btn = document.createElement("button");
+      btn.classList.add("shop-action-btn");
+      if (!item.owned && !item.isBought) {
+        btn.textContent = `Купить (${item.price})`;
+      } else if (item.isBought) btn.textContent = "Применить";
+
+      btn.addEventListener("click", (e) => this.handleBtnClick(e, item));
+
+      return btn;
+    }
+  }
+
+  handleBtnClick(e, item) {
+    console.log("КЛИК ПО КНОПКЕ:", item.owned);
+
+    if (item.owned) {
+      this.eventManager.emit("shop:item:select", item.id);
+    } else {
+      console.log("В ELSE");
+
+      this.eventManager.emit(GameEvents.SHOP_ITEM_PURCHASE, item);
+
+      if (
+        this.getItemType(item.type) === "faces" ||
+        this.getItemType(item.type) === "backs"
+      ) {
+        this.eventManager.emit(GameEvents.RENDER_CARDS);
+      }
+      e.target.textContent;
+    }
   }
   // itemElement.innerHTML = `
   // <div class="item-head">
@@ -232,7 +256,7 @@ export class UIShop {
     return mapping[category];
   }
 
-    getItemType(type) {
+  getItemType(type) {
     const mapping = {
       faces: "faces",
       backs: "backs",

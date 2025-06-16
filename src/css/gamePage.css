@@ -21,7 +21,7 @@
   /* align-items: center; */
   width: 100%;
   /* color: white; */
-  background-color: rgb(155, 60, 112);
+  background-color: rgba(155, 60, 112, 0.692);
   padding: calc(var(--padding-sb) / 2) var(--padding-sb);
 }
 

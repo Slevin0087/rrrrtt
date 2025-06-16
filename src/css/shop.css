@@ -79,6 +79,29 @@
   box-shadow: 0 0 1em rgba(0, 0, 0, 0.2);
 }
 
+.owned {
+  border: 0.2em solid red;
+}
+
+.checkmark-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #4caf50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.checkmark {
+  width: 12px;
+  height: 20px;
+  border-bottom: 3px solid white;
+  border-right: 3px solid white;
+  transform: rotate(45deg);
+  margin-top: -4px;
+}
+
 .item-head {
   display: flex;
   flex-direction: column;
