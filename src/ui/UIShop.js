@@ -73,20 +73,36 @@ export class UIShop {
         item.category === this.getTypeForCategory(shopState.currentCategory)
     );
 
-    items.forEach((item) => {
-      this.elements.itemsContainer.append(this.createShopItemElement(item));
+    items.forEach((item, index) => {
+      this.elements.itemsContainer.append(
+        this.createShopItemElement(item, index)
+      );
     });
 
     // Обновляем баланс
     this.updateBalance(this.stateManager.state.player.coins);
   }
 
-  createShopItemElement(item) {
+  createShopItemElement(item, index) {
     const containerElement = document.createElement("div");
-    containerElement.className = `item-container ${item.owned ? "owned" : ""}`;
+    const selectedItems = this.stateManager.state.player.selectedItems;
 
+    console.log("selectedItems:", selectedItems);
+    console.log("item.type:", item.type);
+
+    const selectedItem = selectedItems[item.type];
+    const isOwned = item.id === selectedItem.id;
+    const purchasedItems = this.stateManager.state.player.purchasedItems;
+    const purchasedItem = purchasedItems[item.type];
+    const isItemBuy = purchasedItem.ids.includes(item.id);
+
+    containerElement.className = `item-container ${isOwned ? "owned" : ""}`;
     const itemElement = document.createElement("div");
+    // Действия с найденным элементом
+    console.log("Найден выбранный элемент:", selectedItem);
+
     itemElement.className = "shop-item";
+    itemElement.id = `shop-item-${index}`;
     const itemHead = document.createElement("div");
     const itemName = document.createElement("h3");
     const itemDescription = document.createElement("p");
@@ -146,88 +162,63 @@ export class UIShop {
     }
     shopItemContainer.append(shopItem);
 
-    const btnOrCircle = this.creatBuyBtn(item);
+    const circle = this.createCircle(index);
+    const btnOrCircle = this.createBtn(item, index, isOwned, isItemBuy);
 
-    itemElement.append(itemHead, shopItemContainer, btnOrCircle);
+    itemElement.append(itemHead, shopItemContainer, btnOrCircle, circle);
     containerElement.append(itemElement);
-
+    if (isOwned) {
+      circle.classList.remove("hidden");
+      btnOrCircle.classList.add("hidden");
+    } else if (!isOwned && !isItemBuy) {
+      btnOrCircle.classList.remove("hidden");
+      circle.classList.add("hidden");
+    } else if (isItemBuy && !isOwned) {
+      circle.classList.add("hidden");
+      btnOrCircle.classList.remove("hidden");
+    }
     return containerElement;
   }
 
-  creatBuyBtn(item) {
-    console.log("В СОЗДАНИИ КНОПОК");
-    if (item.owned && item.isBought) {
-      const checkmarkCircle = document.createElement("div");
-      const checkmark = document.createElement("div");
-      checkmarkCircle.classList.add("checkmark-circle");
-      checkmark.classList.add("checkmark");
-      checkmarkCircle.append(checkmark);
-      return checkmarkCircle;
-    } else {
-      const btn = document.createElement("button");
-      btn.classList.add("shop-action-btn");
-      if (!item.owned && !item.isBought) {
-        btn.textContent = `Купить (${item.price})`;
-      } else if (item.isBought) btn.textContent = "Применить";
-
-      btn.addEventListener("click", (e) => this.handleBtnClick(e, item));
-
-      return btn;
-    }
+  createCircle(index) {
+    const checkmarkCircle = document.createElement("div");
+    checkmarkCircle.id = `checkmarkCircle-${index}`;
+    const checkmark = document.createElement("div");
+    checkmarkCircle.classList.add("checkmark-circle");
+    checkmark.classList.add("checkmark");
+    checkmarkCircle.append(checkmark);
+    return checkmarkCircle;
   }
 
-  handleBtnClick(e, item) {
+  createBtn(item, index, isOwned, isItemBuy) {
+    const btn = document.createElement("button");
+    btn.classList.add("shop-action-btn");
+    btn.id = `btn-buy-${index}`;
+    if (!isOwned && !isItemBuy) {
+      btn.textContent = `Купить (${item.price})`;
+    } else if (isItemBuy) btn.textContent = "Применить";
+
+    btn.addEventListener("click", (e) =>
+      this.handleBtnClick(item, isOwned, isItemBuy)
+    );
+
+    return btn;
+  }
+
+  handleBtnClick(item, isOwned, isItemBuy) {
     console.log("КЛИК ПО КНОПКЕ:", item.owned);
-
-    if (item.owned) {
-      this.eventManager.emit("shop:item:select", item.id);
-    } else {
-      console.log("В ELSE");
-
-      this.eventManager.emit(GameEvents.SHOP_ITEM_PURCHASE, item);
-
-      if (
-        this.getItemType(item.type) === "faces" ||
-        this.getItemType(item.type) === "backs"
-      ) {
+    if (isItemBuy && !isOwned) {
+      if (item.type === "faces" || item.type === "backs") {
+        this.eventManager.emit(GameEvents.SET_SELECTED_ITEMS, item);
         this.eventManager.emit(GameEvents.RENDER_CARDS);
       }
-      e.target.textContent;
+      this.render(this.stateManager.state.shop, ShopConfig);
+    } else if (!isItemBuy && !isOwned) {      
+      this.eventManager.emit(GameEvents.SHOP_ITEM_PURCHASE, item);
+      console.log("В ELSE");
+      this.render(this.stateManager.state.shop, ShopConfig);
     }
   }
-  // itemElement.innerHTML = `
-  // <div class="item-head">
-  //   <h3>${item.name}</h3>
-  //   <p>${item.description}</p>
-  // </div>
-  // <div class="shop-item-container">
-  //   <div
-  //       class="shop-card"
-  //       data-suit="♥"
-  //       data-value="A"
-  //       data-color="red"
-  //   >
-  //     <span class="shop-card-top-left value-red">A♥</span>
-  //     <span class="shop-card-center value-red">♥</span>
-  //     <span class="shop-card-bottom-right value-red">A♥</span>
-  //   </div>
-  //   <div
-  //       class="shop-card"
-  //       data-suit="♣"
-  //       data-value="K"
-  //       data-color="black"
-  //   >
-  //     <span class="shop-card-top-left value-black">K♣</span>
-  //     <span class="shop-card-center value-black">♣</span>
-  //     <span class="shop-card-bottom-right value-black">K♣</span>
-  //   </div>
-  // </div>
-  // <button class="shop-action-btn"
-  // data-id="${item.id}"
-  // data-price="${item.price}">
-  // ${item.owned ? "Применить" : `Купить (${item.price})`}
-  // </button>
-  // `;
 
   setActiveCategory(category) {
     // Обновляем кнопки
@@ -254,15 +245,6 @@ export class UIShop {
       backgrounds: "background",
     };
     return mapping[category];
-  }
-
-  getItemType(type) {
-    const mapping = {
-      faces: "faces",
-      backs: "backs",
-      backgrounds: "backgrounds",
-    };
-    return mapping[type];
   }
 
   show() {

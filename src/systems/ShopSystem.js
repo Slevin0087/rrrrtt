@@ -28,6 +28,9 @@ export class ShopSystem {
     this.eventManager.on(GameEvents.SHOP_ITEM_PURCHASE, (item) =>
       this.purchaseItem(item)
     );
+    this.eventManager.on(GameEvents.SET_SELECTED_ITEMS, (item) =>
+      this.setSelectedItems(item)
+    );
   }
 
   loadShopItems() {
@@ -62,21 +65,8 @@ export class ShopSystem {
   purchaseItem(item) {
     console.log("в purchaseItem:", item);
 
-    // const item = this.stateManager.shop.items.find((i) => i.id === itemId);
-    // const item = ShopConfig.items.find((i) => i.id === itemId);
-    // console.log("item:", item);
-
-    if (!item || item.owned) return;
-    console.log(
-      "в purchaseItem this.stateManager.shop.balance:",
-      this.stateManager
-    );
     if (this.stateManager.state.player.coins >= item.price) {
       this.eventManager.emit(GameEvents.DECREMENT_COINS, item.price);
-      // item.owned = true;
-
-      // this.storage.saveCoins(this.stateManager.state.shop.balance);
-      // this.storage.addPurchasedItem(itemId);
 
       this.applyItem(item);
 
@@ -84,10 +74,6 @@ export class ShopSystem {
       this.eventManager.emit(
         GameEvents.UI_NOTIFICATION,
         `Стиль "${item.name}" куплен и применен`
-      );
-      this.eventManager.emit(
-        GameEvents.SHOP_BALANCE_UPDATE,
-        this.stateManager.state.player.coins
       );
     } else {
       this.eventManager.emit(
@@ -98,20 +84,14 @@ export class ShopSystem {
   }
 
   applyItem(item) {
-    switch (item.type) {
-      case "faces":
-        this.stateManager.state.player.selectedItems.cardFace.styleClass =
-          item.styleClass;
-        break;
-      case "backs":
-        this.stateManager.state.player.selectedItems.cardBack.styleClass =
-          item.styleClass;
-        break;
-      case "backgrounds":
-        this.stateManager.state.player.selectedItems.background.styleClass =
-          item.styleClass;
-        break;
-    }
+    this.stateManager.state.player.purchasedItems[item.type].ids.push(item.id);
+  }
+
+  setSelectedItems(item) {
+    this.stateManager.state.player.selectedItems[item.type].id = item.id;
+    this.stateManager.state.player.selectedItems[item.type].styleClass =
+      item.styleClass;
+    this.stateManager.savePlayerStats();
   }
 
   changeCategory(category, shopConfig) {

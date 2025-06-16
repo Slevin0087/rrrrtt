@@ -41,6 +41,7 @@ export const GameEvents = {
   SET_DIFFICUTY_CHANGE: "set:difficulty:change",
   SET_MUSIC_VOLUME: "set:music:volume",
   SET_SOUND_TOGGLE: "set:sound:toggle",
+  SET_SELECTED_ITEMS: "set:selected:items",
   GAME_NEW: "game:new",
   GAME_START: "game:start",
   GAME_CONTINUE: "game:continue",

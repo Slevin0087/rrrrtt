@@ -13,14 +13,28 @@ export class Storage {
       gamesPlayed: 0,
       cardsFlipped: 0,
       winsWithoutHints: 0,
+      purchasedItems: {
+        faces: {
+          ids: ["classic_faces", "cosmo_faces"],
+        },
+        backs: {
+          ids: ["classic_back", "dice_back"],
+        },
+        backgrounds: {
+          ids: ["classic_fon", "light_green_fon"],
+        },
+      },
       selectedItems: {
-        cardFace: {
+        faces: {
+          id: "cosmo_faces",
           styleClass: "cosmo-faces",
         },
-        cardBack: {
+        backs: {
+          id: "dice_back",
           styleClass: "dice-back",
         },
-        background: {
+        backgrounds: {
+          id: "light_green_fon",
           styleClass: "light-green-fon",
         },
       },
