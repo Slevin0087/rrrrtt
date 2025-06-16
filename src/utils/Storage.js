@@ -2,7 +2,7 @@ export class Storage {
   constructor() {
     this.defaultPlayerStats = {
       name: "Игрок",
-      coins: 0,
+      coins: 1000,
       wins: 0,
       losses: 0,
       totalMoves: 0,

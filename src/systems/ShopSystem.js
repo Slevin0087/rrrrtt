@@ -59,39 +59,7 @@ export class ShopSystem {
     }
   }
 
-  // purchaseItem(itemId) {
-  //   console.log("в purchaseItem:", itemId);
-
-  //   // const item = this.stateManager.shop.items.find((i) => i.id === itemId);
-  //   const item = ShopConfig.items.find((i) => i.id === itemId);
-  //   console.log("item:", item);
-
-  //   if (!item || item.owned) return;
-  //   console.log(
-  //     "в purchaseItem this.stateManager.shop.balance:",
-  //     this.stateManager.shop.balance
-  //   );
-  //   if (this.stateManager.shop.balance >= item.price) {
-  //     this.stateManager.shop.balance -= item.price;
-  //     item.owned = true;
-
-  //     // this.storage.saveCoins(this.stateManager.shop.balance);
-  //     // this.storage.addPurchasedItem(itemId);
-
-  //     this.applyItem(item);
-  //     this.eventManager.emit(
-  //       GameEvents.UI_NOTIFICATION,
-  //       `Стиль "${item.name}" куплен и применен`
-  //     );
-  //   } else {
-  //     this.eventManager.emit(
-  //       GameEvents.UI_NOTIFICATION,
-  //       "Недостаточно хусынок"
-  //     );
-  //   }
-  // }
-
-    purchaseItem(item) {
+  purchaseItem(item) {
     console.log("в purchaseItem:", item);
 
     // const item = this.stateManager.shop.items.find((i) => i.id === itemId);
@@ -103,63 +71,47 @@ export class ShopSystem {
       "в purchaseItem this.stateManager.shop.balance:",
       this.stateManager
     );
-    // if (this.stateManager.state.shop.balance >= item.price) {
-    //   this.stateManager.state.shop.balance -= item.price;
-      item.owned = true;
+    if (this.stateManager.state.player.coins >= item.price) {
+      this.eventManager.emit(GameEvents.DECREMENT_COINS, item.price);
+      // item.owned = true;
 
       // this.storage.saveCoins(this.stateManager.state.shop.balance);
       // this.storage.addPurchasedItem(itemId);
 
       this.applyItem(item);
+
+      this.stateManager.savePlayerStats();
       this.eventManager.emit(
         GameEvents.UI_NOTIFICATION,
         `Стиль "${item.name}" куплен и применен`
       );
-    // } else {
-    //   this.eventManager.emit(
-    //     GameEvents.UI_NOTIFICATION,
-    //     "Недостаточно хусынок"
-    //   );
-    // }
+      this.eventManager.emit(
+        GameEvents.SHOP_BALANCE_UPDATE,
+        this.stateManager.state.player.coins
+      );
+    } else {
+      this.eventManager.emit(
+        GameEvents.UI_NOTIFICATION,
+        "Недостаточно хусынок"
+      );
+    }
   }
 
-  // applyItem(item) {
-  //   switch (item.type) {
-  //     case "cardFace":
-  //       this.stateManager.state.shop.cardFaceStyle = item.styleClass;
-  //     this.stateManager.state.shop.selectedItems.
-  //       break;
-  //     case "cardBack":
-  //       this.stateManager.state.settings.cardBackStyle = item.styleClass;
-  //       break;
-  //     case "background":
-  //       this.stateManager.state.settings.backgroundImage = item.imageUrl;
-  //       break;
-  //   }
-
-  //   // this.storage.saveGameSettings(this.stateManager.state.settings);
-  //   this.eventManager.emit(
-  //     "game:settings:update",
-  //     this.stateManager.state.settings
-  //   );
-  // }
-
-    applyItem(item) {
+  applyItem(item) {
     switch (item.type) {
       case "faces":
-        this.stateManager.state.shop.cardFaceStyle = item.styleClass;
-      this.stateManager.state.shop.selectedItems.cardFace = item;
+        this.stateManager.state.player.selectedItems.cardFace.styleClass =
+          item.styleClass;
         break;
       case "backs":
-        this.stateManager.state.shop.selectedItems.cardBack = item;
+        this.stateManager.state.player.selectedItems.cardBack.styleClass =
+          item.styleClass;
         break;
       case "backgrounds":
-        this.stateManager.state.shop.selectedItems.background = item;
+        this.stateManager.state.player.selectedItems.background.styleClass =
+          item.styleClass;
         break;
     }
-
-    // this.storage.saveGameSettings(this.stateManager.state.settings);
-    this.eventManager.emit(GameEvents.SET_SHOP_STATS);
   }
 
   changeCategory(category, shopConfig) {

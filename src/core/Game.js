@@ -58,6 +58,7 @@ export class Game {
     });
 
     this.eventManager.on(GameEvents.CARD_MOVED, () => this.renderCards());
+    this.eventManager.on(GameEvents.RENDER_CARDS, () => this.renderCards());
   }
 
   registerComponents() {

@@ -24,14 +24,13 @@
 .liquid-metal-faces {
   background: linear-gradient(
     135deg,
-    rgba(200, 200, 200, 0.8) 0%,
-    rgba(150, 150, 150, 0.9) 50%,
-    rgba(200, 200, 200, 0.8) 100%
+    rgba(200, 200, 200) 0%,
+    rgba(150, 150, 150) 50%,
+    rgba(200, 200, 200) 100%
   );
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.8),
     inset 0 0 10px rgba(0, 0, 0, 0.2);
   border: none;
-  position: relative;
   overflow: hidden;
 }
 
@@ -137,18 +136,18 @@
 }
 
 .green-path-fon {
-  background: url("./assets/shop/fons/fon_1.jpg") no-repeat center center fixed;
+  background: url("../assets/shop/fons/fon_1.jpg") no-repeat center center fixed;
 }
 
 .green-field-fon {
-  background: url("./assets/shop/fons/fon_2.jpg") no-repeat center center fixed;
+  background: url("../assets/shop/fons/fon_2.jpg") no-repeat center center fixed;
 }
 
 .green-field2-fon {
-  background: url("./assets/shop/fons/fon_3.jpg") no-repeat center center fixed;
+  background: url("../assets/shop/fons/fon_3.jpg") no-repeat center center fixed;
 }
 
 .green-field3-fon {
-      background: url("./assets/shop/fons/fon_4.jpg") no-repeat center center fixed;
+      background: url("../assets/shop/fons/fon_4.jpg") no-repeat center center fixed;
 
 }

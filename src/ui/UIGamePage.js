@@ -51,7 +51,9 @@ export class UIGamePage {
       this.eventManager.emit("cards:collect");
     });
 
-    this.eventManager.on(GameEvents.SCORE_UPDATE, (score) => this.updateScore(score));
+    this.eventManager.on(GameEvents.SCORE_UPDATE, (score) =>
+      this.updateScore(score)
+    );
 
     this.eventManager.on(GameEvents.TIME_UPDATE, (time) => {
       this.updateTime(time);
@@ -98,10 +100,11 @@ export class UIGamePage {
 
   show() {
     console.log("SHOOOOOOOOOOOOOOOOOOW GAME");
-
-    const styleClass = this.stateManager.state.player.selectedItems.background.styleClass;
-    this.page.classList.add(styleClass);
-    this.page.classList.remove("hidden");
+    this.page.className = "";
+    const styleClass =
+      this.stateManager.state.player.selectedItems.background.styleClass;
+    this.page.classList.add("game-interface", styleClass);
+    // this.page.classList.remove("hidden");
     this.updateUI();
   }
 

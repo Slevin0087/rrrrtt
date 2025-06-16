@@ -39,6 +39,11 @@ export class StateManager {
       this.savePlayerStats(this.state.player);
     });
 
+    this.eventManager.on(GameEvents.DECREMENT_COINS, (coins) => {
+      this.state.player.coins -= coins;
+      this.savePlayerStats(this.state.player);
+    });
+
     this.eventManager.on(
       GameEvents.SET_ACTIV_PAGE,
       (page) => (this.state.ui.activePage = page)
@@ -103,8 +108,7 @@ export class StateManager {
     this.eventManager.on(GameEvents.SHOP_CATEGORY_CHANGE, (category) => {
       this.state.shop.currentCategory = category;
       this.saveShopStats();
-    }
-    );
+    });
 
     this.eventManager.on(GameEvents.SET_SHOP_STATS, () => this.saveShopStats());
   }

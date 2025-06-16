@@ -55,7 +55,7 @@ export class UIShop {
     this.eventManager.on(GameEvents.SHOP_RENDER, (shopState, config) =>
       this.render(shopState, config)
     );
-    this.eventManager.on("shop:balance:update", (balance) =>
+    this.eventManager.on(GameEvents.SHOP_BALANCE_UPDATE, (balance) =>
       this.updateBalance(balance)
     );
   }
@@ -162,6 +162,10 @@ export class UIShop {
         
         // this.eventManager.emit(GameEvents.SHOP_ITEM_PURCHASE, item.id);
         this.eventManager.emit(GameEvents.SHOP_ITEM_PURCHASE, item);
+        if (this.getItemType(item.type) === "faces" || this.getItemType(item.type) === "backs") {
+
+          this.eventManager.emit(GameEvents.RENDER_CARDS);
+        }
       }
     });
 
@@ -226,6 +230,15 @@ export class UIShop {
       backgrounds: "background",
     };
     return mapping[category];
+  }
+
+    getItemType(type) {
+    const mapping = {
+      faces: "faces",
+      backs: "backs",
+      backgrounds: "backgrounds",
+    };
+    return mapping[type];
   }
 
   show() {
