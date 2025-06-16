@@ -53,7 +53,7 @@ export const ShopConfig = {
       description: "Космический стиль",
       rarity: "uncommon",
       unlockCondition: { wins: 5 },
-      previewImage: "assets/shop/previews/cosmo_faces.png",
+      previewImage: "",
       styles: {
         background: `radial-gradient(circle at center, #000428, #004e92),
           url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='1' fill='white'/%3E%3Ccircle cx='80' cy='120' r='1' fill='white'/%3E%3C/svg%3E")`,
@@ -94,7 +94,7 @@ export const ShopConfig = {
       description: "Очень приятный стиль",
       rarity: "uncommon",
       unlockCondition: { wins: 5 },
-      previewImage: "assets/shop/previews/leather_faces.png",
+      previewImage: "",
       styles: {
         background: `radial-gradient(circle at 70% 30%, #f5e7d0 0%, #e6d5b8 100%),
           url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><path fill='rgba(139,69,19,0.1)' d='M0 0h100v100H0z'/></svg>")`,

@@ -213,7 +213,11 @@ export class RenderingSystem {
   createStockElement() {
     const element = document.createElement("div");
     const span = document.createElement("span");
-    element.className = "stock";
+    // element.className = "stock";
+    element.classList.add(
+      "stock",
+      this.stateManager.state.player.selectedItems.cardBack.styleClass
+    );
     element.id = "stock";
     // span.innerHTML = '<svg viewBox="0 0 24 24" width="90"><path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/></svg>';
     span.textContent = "↺";
@@ -313,10 +317,12 @@ export class RenderingSystem {
     // Настройка рубашки/лица
     if (!card.faceUp) {
       cardElement.classList.add(
-        "face-down",
-        this.stateManager.state.settings.cardBackStyle
+        this.stateManager.state.player.selectedItems.cardBack.styleClass
       );
     } else {
+      cardElement.classList.add(
+        this.stateManager.state.player.selectedItems.cardFace.styleClass
+      );
       const topSymbol = document.createElement("span");
       topSymbol.className = "card-symbol top";
       topSymbol.textContent = card.getSymbol();

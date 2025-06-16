@@ -139,8 +139,8 @@ export class UIManager {
     // Проверка iOS/Safari (современный способ)
     const isIOS = () => {
       // 1. Проверка User-Agent
-      const ua = navigator.userAgent;
-      const isIOSUserAgent = /(iPad|iPhone|iPod)/gi.test(ua);
+      const userA = navigator.userAgent;
+      const isIOSUserAgent = /(iPad|iPhone|iPod)/gi.test(userA);
 
       // 2. Проверка по поведенческим особенностям
       const isTouchDevice = "ontouchstart" in window;

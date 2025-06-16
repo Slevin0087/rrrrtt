@@ -13,6 +13,17 @@ export class Storage {
       gamesPlayed: 0,
       cardsFlipped: 0,
       winsWithoutHints: 0,
+      selectedItems: {
+        cardFace: {
+          styleClass: "cosmo-faces",
+        },
+        cardBack: {
+          styleClass: "dice-back",
+        },
+        background: {
+          styleClass: "light-green-fon",
+        },
+      },
     };
 
     this.defaultGameStats = {
@@ -43,55 +54,9 @@ export class Storage {
       currentCategory: "faces",
       purchasedItems: [],
       selectedItems: {
-        cardFace: {
-          id: "classic_faces",
-          name: "Классические",
-          type: "faces",
-          category: "cardFace",
-          price: 0,
-          styleClass: "classic-faces",
-          description: "Стандартный дизайн карт",
-          rarity: "common",
-          unlockCondition: null,
-          previewImage: "",
-          styles: {
-            background: "rgb(204, 195, 195)",
-          },
-        },
-        cardBack: {
-          id: "classic_back",
-          name: "Классическая рубашка",
-          type: "backs",
-          category: "cardBack",
-          price: 0,
-          styleClass: "classic-back",
-          description: "Классическая рубашка",
-          rarity: "common",
-          unlockCondition: null,
-          previewImage: "",
-          styles: {
-            background:
-              "repeating-linear-gradient(45deg,#1a5a1a,#1a5a1a 10px,#165016 10px,#165016 20px)",
-            color: "transparent !important",
-          },
-        },
-        background: {
-          id: "classic_fon",
-          name: "Классический зелёный",
-          type: "backgrounds",
-          category: "background",
-          price: 0,
-          styleClass: "classic-fon",
-          description: "Классический фон",
-          rarity: "rare",
-          unlockCondition: { score: 1000 },
-          previewImage: "",
-          styles: {
-            backgroundColor: "rgb(104, 189, 104)",
-            width: "100%",
-            height: "100%",
-          },
-        },
+        cardFace: {},
+        cardBack: {},
+        background: {},
       },
     };
   }

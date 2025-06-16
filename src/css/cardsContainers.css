@@ -38,7 +38,7 @@
   border: var(--border-c) solid rgb(7, 7, 7);
   top: 0;
   left: 0;
-  background: rgb(201, 189, 189);
+  /* background: rgb(201, 189, 189); */
   cursor: pointer;
 }
 
@@ -79,6 +79,16 @@
 
 .stock {
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: var(--card-width);
+  height: var(--card-height);
+  text-align: center;
+  color: transparent !important;
+  border-radius: var(--card-radius);
 }
 
 .stock-span {
@@ -97,7 +107,6 @@
 }
 
 /* Общий стиль для всех контейнеров */
-.stock,
 .foundation,
 .card-waste,
 .card-placeholder {
@@ -166,35 +175,10 @@
 }
 
 /* Стиль для карт в стопках */
-.card-placeholder .card {
-  width: var(--card-width);
-  height: var(--card-height);
-  border-radius: var(--card-radius);
-  position: absolute;
-  transition: transform 0.3s ease;
-  border: var(--border-c) solid rgb(2, 2, 2);
-  top: 0;
-  left: 0;
-  background: rgb(204, 195, 195);
-}
 
 /* .card-placeholder .card:nth-child(n + 2) {
   top: var(--card-overlap);
 } */
-
-.card-placeholder .face-down,
-.stock {
-  /* background: #ac0e0e; */
-  /* background: rgb(204, 195, 195); */
-  background: repeating-linear-gradient(
-    45deg,
-    #1a5a1a,
-    #1a5a1a 10px,
-    #165016 10px,
-    #165016 20px
-  );
-  color: transparent !important;
-}
 
 /* Добавьте в ваш CSS файл (например, cardsContainers.css) */
 .points-popup {

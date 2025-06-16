@@ -66,4 +66,10 @@ export const UIConfig = {
     defaultLanguage: "ru",
     supportedLanguages: ["ru", "en"],
   },
+
+  playerSelectedItems: {
+    cardFace: {},
+    cardBack: {},
+    background: {},
+  },
 };
