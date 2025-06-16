@@ -208,10 +208,8 @@ export class UIShop {
   handleBtnClick(item, isOwned, isItemBuy) {
     console.log("КЛИК ПО КНОПКЕ:", item.owned);
     if (isItemBuy && !isOwned) {
-      if (item.type === "faces" || item.type === "backs") {
         this.eventManager.emit(GameEvents.SET_SELECTED_ITEMS, item);
         this.eventManager.emit(GameEvents.RENDER_CARDS);
-      }
       this.render(this.stateManager.state.shop, ShopConfig);
     } else if (!isItemBuy && !isOwned) {      
       this.eventManager.emit(GameEvents.SHOP_ITEM_PURCHASE, item);
