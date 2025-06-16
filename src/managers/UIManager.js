@@ -136,38 +136,70 @@ export class UIManager {
   // }
 
   toggleFullscreen(fullScreenBtn) {
-    // Проверяем iOS/Safari
-    const isIOS =
-      /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    // Проверка iOS/Safari (современный способ)
+    const isIOS = () => {
+      // 1. Проверка User-Agent
+      const ua = navigator.userAgent;
+      const isIOSUserAgent = /(iPad|iPhone|iPod)/gi.test(ua);
 
-    if (isIOS) {
-      // Особый случай для iOS
+      // 2. Проверка по поведенческим особенностям
+      const isTouchDevice = "ontouchstart" in window;
+      const isAppleDevice = window.ApplePaySetupFeature || window.webkit;
+
+      // 3. Проверка полноэкранного API
+      const isFullscreenSupported =
+        document.fullscreenEnabled ||
+        document.webkitFullscreenEnabled ||
+        document.webkitSupportsFullscreen;
+
+      return (
+        (isIOSUserAgent || isAppleDevice) &&
+        isTouchDevice &&
+        !isFullscreenSupported
+      );
+    };
+
+    // Обработка iOS
+    if (isIOS()) {
+      // Специальная обработка для видео/iframe
+      const videoElements = document.getElementsByTagName("video");
+      if (videoElements.length > 0) {
+        videoElements[0].webkitEnterFullscreen();
+        fullScreenBtn.textContent = "_";
+        return;
+      }
+
+      // Показываем инструкцию для iOS
+      alert(
+        "На iPhone:\n1. Нажмите кнопку 'Поделиться'\n2. Выберите 'На экран «Домой»'\n3. Откройте сайт из главного экрана"
+      );
+      return;
+    }
+
+    // Стандартная реализация для других платформ
+    if (!document.fullscreenElement) {
       const elem = document.documentElement;
 
-      if (elem.webkitSupportsFullscreen) {
-        if (!elem.webkitDisplayingFullscreen) {
-          elem.webkitRequestFullscreen();
-          fullScreenBtn.textContent = "_";
-        } else {
-          document.webkitExitFullscreen();
-          fullScreenBtn.textContent = "[ ]";
-        }
-      } else {
-        // Fallback для старых версий iOS
-        alert("Полноэкранный режим не поддерживается в вашем браузере");
+      // Пробуем все варианты API
+      const requestFs =
+        elem.requestFullscreen ||
+        elem.webkitRequestFullscreen ||
+        elem.webkitEnterFullscreen;
+
+      if (requestFs) {
+        requestFs
+          .call(elem)
+          .then(() => (fullScreenBtn.textContent = "_"))
+          .catch((err) => {
+            console.error("Fullscreen error:", err);
+            alert("Разрешите полноэкранный режим в настройках браузера");
+          });
       }
     } else {
-      // Оригинальный код для других платформ
-      if (!document.fullscreenElement) {
-        document.documentElement
-          .requestFullscreen()
-          .then(() => (fullScreenBtn.textContent = "_"))
-          .catch((err) => console.error("Fullscreen error:", err));
-      } else {
-        document.exitFullscreen();
-        fullScreenBtn.textContent = "[ ]";
-      }
+      const exitFs = document.exitFullscreen || document.webkitExitFullscreen;
+
+      exitFs.call(document);
+      fullScreenBtn.textContent = "[ ]";
     }
   }
 
