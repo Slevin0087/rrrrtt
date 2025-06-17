@@ -204,10 +204,8 @@ export class Animator {
 
     // 1. Позиционирование через transform + left/top (для iOS)
     const cardRect = cardElement.getBoundingClientRect();
-    pointsElement.style.position = "fixed";
     pointsElement.style.left = `${cardRect.left + cardRect.width / 2}px`;
     pointsElement.style.top = `${cardRect.top}px`;
-    pointsElement.style.transform = "translate(-50%, 0)"; // Центрирование
 
     // 2. Форсируем запуск анимации
     document.body.appendChild(pointsElement);
@@ -236,17 +234,100 @@ export class Animator {
     );
   }
 
+  // static animationCoinsEarned(text, options = {}) {
+  //   return new Promise((resolve) => {
+  //     // Параметры по умолчанию
+  //     const {
+  //       duration = 2000, // Общая продолжительность анимации
+  //       fontSize = "24px", // Начальный размер шрифта
+  //       targetFontSize = "32px", // Размер при увеличении
+  //       color = "#ffeb3b", // Цвет текста
+  //       position = "center", // Позиция на экране
+  //       fadeInDuration = 300, // Длительность появления
+  //       fadeOutDuration = 1000, // Длительность исчезновения
+  //     } = options;
+
+  //     // Создаем элемент для текста
+  //     const textElement = document.createElement("div");
+  //     textElement.className = "animated-text";
+  //     textElement.textContent = text;
+  //     textElement.style.position = "fixed";
+  //     textElement.style.color = color;
+  //     textElement.style.fontSize = fontSize;
+  //     textElement.style.fontWeight = "bold";
+  //     textElement.style.textShadow = "0 0 5px rgba(0,0,0,0.5)";
+  //     textElement.style.pointerEvents = "none";
+  //     textElement.style.zIndex = "2000";
+  //     textElement.style.opacity = "0";
+  //     textElement.style.transition = `all ${fadeInDuration}ms ease-out`;
+
+  //     // Позиционирование
+  //     switch (position) {
+  //       case "center":
+  //         textElement.style.top = "50%";
+  //         textElement.style.left = "50%";
+  //         textElement.style.transform = "translate(-50%, -50%)";
+  //         break;
+  //       case "top":
+  //         textElement.style.top = "20%";
+  //         textElement.style.left = "50%";
+  //         textElement.style.transform = "translateX(-50%)";
+  //         break;
+  //       case "bottom":
+  //         textElement.style.bottom = "20%";
+  //         textElement.style.left = "50%";
+  //         textElement.style.transform = "translateX(-50%)";
+  //         break;
+  //       default:
+  //         if (position.x !== undefined && position.y !== undefined) {
+  //           textElement.style.left = `${position.x}px`;
+  //           textElement.style.top = `${position.y}px`;
+  //         }
+  //     }
+
+  //     document.body.appendChild(textElement);
+
+  //     // Анимация
+  //     requestAnimationFrame(() => {
+  //       // Фаза 1: Появление
+  //       textElement.style.opacity = "1";
+
+  //       setTimeout(() => {
+  //         // Фаза 2: Увеличение
+  //         textElement.style.transition = `all ${duration / 3}ms ease-in-out`;
+  //         textElement.style.fontSize = targetFontSize;
+
+  //         setTimeout(() => {
+  //           // Фаза 3: Возврат к исходному размеру
+  //           textElement.style.fontSize = fontSize;
+
+  //           setTimeout(() => {
+  //             // Фаза 4: Исчезновение
+  //             textElement.style.transition = `opacity ${fadeOutDuration}ms ease-out`;
+  //             textElement.style.opacity = "0";
+
+  //             setTimeout(() => {
+  //               textElement.remove();
+  //               resolve();
+  //             }, fadeOutDuration);
+  //           }, duration / 3);
+  //         }, duration / 3);
+  //       }, fadeInDuration);
+  //     });
+  //   });
+  // }
+
   static animationCoinsEarned(text, options = {}) {
     return new Promise((resolve) => {
       // Параметры по умолчанию
       const {
-        duration = 2000, // Общая продолжительность анимации
-        fontSize = "24px", // Начальный размер шрифта
-        targetFontSize = "32px", // Размер при увеличении
-        color = "#ffeb3b", // Цвет текста
-        position = "center", // Позиция на экране
-        fadeInDuration = 300, // Длительность появления
-        fadeOutDuration = 1000, // Длительность исчезновения
+        duration = 2, // Продолжительность в секундах (GSAP использует секунды)
+        fontSize = "24px",
+        targetFontSize = "32px",
+        color = "#ffeb3b",
+        position = "center",
+        fadeInDuration = 0.3,
+        fadeOutDuration = 1,
       } = options;
 
       // Создаем элемент для текста
@@ -261,23 +342,23 @@ export class Animator {
       textElement.style.pointerEvents = "none";
       textElement.style.zIndex = "2000";
       textElement.style.opacity = "0";
-      textElement.style.transition = `all ${fadeInDuration}ms ease-out`;
+      textElement.style.whiteSpace = "nowrap"; // Предотвращаем перенос текста
 
       // Позиционирование
       switch (position) {
         case "center":
-          textElement.style.top = "50%";
           textElement.style.left = "50%";
+          textElement.style.top = "50%";
           textElement.style.transform = "translate(-50%, -50%)";
           break;
         case "top":
-          textElement.style.top = "20%";
           textElement.style.left = "50%";
+          textElement.style.top = "20%";
           textElement.style.transform = "translateX(-50%)";
           break;
         case "bottom":
-          textElement.style.bottom = "20%";
           textElement.style.left = "50%";
+          textElement.style.bottom = "20%";
           textElement.style.transform = "translateX(-50%)";
           break;
         default:
@@ -289,32 +370,40 @@ export class Animator {
 
       document.body.appendChild(textElement);
 
-      // Анимация
-      requestAnimationFrame(() => {
-        // Фаза 1: Появление
-        textElement.style.opacity = "1";
+      // GSAP анимация
+      const timeline = gsap.timeline({
+        onComplete: () => {
+          textElement.remove();
+          resolve();
+        },
+      });
 
-        setTimeout(() => {
-          // Фаза 2: Увеличение
-          textElement.style.transition = `all ${duration / 3}ms ease-in-out`;
-          textElement.style.fontSize = targetFontSize;
+      // 1. Появление
+      timeline.fromTo(
+        textElement,
+        { opacity: 0 },
+        { opacity: 1, duration: fadeInDuration }
+      );
 
-          setTimeout(() => {
-            // Фаза 3: Возврат к исходному размеру
-            textElement.style.fontSize = fontSize;
+      // 2. Увеличение текста с сохранением позиции
+      timeline.to(textElement, {
+        fontSize: targetFontSize,
+        duration: duration / 3,
+        ease: "power1.inOut",
+      });
 
-            setTimeout(() => {
-              // Фаза 4: Исчезновение
-              textElement.style.transition = `opacity ${fadeOutDuration}ms ease-out`;
-              textElement.style.opacity = "0";
+      // 3. Возврат к исходному размеру
+      timeline.to(textElement, {
+        fontSize: fontSize,
+        duration: duration / 3,
+        ease: "power1.inOut",
+      });
 
-              setTimeout(() => {
-                textElement.remove();
-                resolve();
-              }, fadeOutDuration);
-            }, duration / 3);
-          }, duration / 3);
-        }, fadeInDuration);
+      // 4. Исчезновение
+      timeline.to(textElement, {
+        opacity: 0,
+        duration: fadeOutDuration,
+        ease: "power1.out",
       });
     });
   }
