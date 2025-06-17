@@ -140,6 +140,33 @@
   background-color: rgb(104, 189, 104);
 }
 
+.classic-fon-2 {
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+}
+
+.classic-fon-3 {
+  background: linear-gradient(#2b2b44 2px, transparent 2px),
+    linear-gradient(90deg, #2b2b44 2px, transparent 2px),
+    linear-gradient(#3b3b5a 1px, transparent 1px),
+    linear-gradient(90deg, #3b3b5a 1px, #1a1a2e 1px);
+  background-size: 50px 50px, 50px 50px, 10px 10px, 10px 10px;
+  background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
+}
+
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 .green-path-fon {
   background: url("../assets/shop/fons/fon_1.jpg") no-repeat center center fixed;
 }
