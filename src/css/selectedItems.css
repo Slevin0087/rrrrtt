@@ -57,7 +57,13 @@
 
 /* СТИЛИ РУБАШКИ КАРТ */
 .classic-back {
-  background: repeating-linear-gradient(45deg, #1a5a1a, #1a5a1a 10px, #165016 10px, #165016 20px);
+  background: repeating-linear-gradient(
+    45deg,
+    #1a5a1a,
+    #1a5a1a 10px,
+    #165016 10px,
+    #165016 20px
+  );
   color: transparent !important;
 }
 
@@ -147,6 +153,27 @@
 }
 
 .green-field3-fon {
-      background: url("../assets/shop/fons/fon_4.jpg") no-repeat center center fixed;
+  background: url("../assets/shop/fons/fon_4.jpg") no-repeat center center fixed;
+}
 
+@media (min-width: 350px) {
+  .green-path-fon {
+    background: url("../assets/shop/fons/fon_1_350.jpg") no-repeat center center
+      fixed;
+  }
+
+  .green-field-fon {
+    background: url("../assets/shop/fons/fon_2_350.jpg") no-repeat center center
+      fixed;
+  }
+
+  .green-field2-fon {
+    background: url("../assets/shop/fons/fon_3_350.jpg") no-repeat center center
+      fixed;
+  }
+
+  .green-field3-fon {
+    background: url("../assets/shop/fons/fon_4_350.jpg") no-repeat center center
+      fixed;
+  }
 }
