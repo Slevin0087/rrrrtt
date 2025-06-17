@@ -62,7 +62,7 @@ export class UIPlayerStatePage {
       </tr>
       <tr>
         <td class="left-td">Достижение:</td>
-        <td class="right-td">${statePlayer.achievements.active.icons}</td>
+        <td class="right-td">${statePlayer.achievements.active.icon}</td>
       </tr>`;
   }
 
