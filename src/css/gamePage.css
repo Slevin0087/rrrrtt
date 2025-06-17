@@ -7,7 +7,6 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
   align-items: center;
   gap: var(--gap-for-flex);
   width: 100%;
@@ -16,11 +15,10 @@
 
 .status-bar {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  /* align-items: center; */
+  /* flex-direction: column; */
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
-  /* color: white; */
   background-color: rgba(155, 60, 112, 0.692);
   padding: calc(var(--padding-sb) / 2) var(--padding-sb);
 }
@@ -28,32 +26,6 @@
 .status-bar span {
   color: white;
 }
-
-/* .game-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: var(--gap-for-flex);
-  width: 100%;
-  color: blue;
-} */
-
-/* .row-1,
-.row-2,
-.row-a,
-.row-b {
-  display: flex;
-  gap: 0.2em;
-} */
-
-/* .foundation {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 100%;
-  width: 100%;
-} */
 
 .blinking-text {
   position: absolute;
@@ -103,20 +75,3 @@
     padding: 0;
   }
 }
-
-/* .stock,
-.card-waste,
-.foundation,
-.card-placeholder {
-  width: 60px;
-  height: 100px;
-  border: 1px dashed yellow;
-} */
-
-/* .card {
-  position: absolute;
-  width: 60px;
-  height: 100px;
-  border: 1px solid rgb(111, 0, 255);
-  background-color: white;
-} */

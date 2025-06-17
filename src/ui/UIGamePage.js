@@ -11,6 +11,7 @@ export class UIGamePage {
       messageEl: document.getElementById("message"),
       scoreEl: document.getElementById("points-in-game"),
       timeEl: document.getElementById("time-display"),
+      achievementsIconEl: document.getElementById("achievements_span"),
       restartGameBtn: document.getElementById("new-game-ctr-btn"),
       hintBtn: document.getElementById("hint"),
       menuBtn: document.getElementById("menu-btn"),
@@ -103,7 +104,11 @@ export class UIGamePage {
     this.page.className = "";
     const styleClass =
       this.stateManager.state.player.selectedItems.backgrounds.styleClass;
+    const achievementsIconElText = this.stateManager.state.player.achievements.active.icon;
+    console.log('');
+    
     this.page.classList.add("game-interface", styleClass);
+    this.elements.achievementsIconEl.textContent = achievementsIconElText;
     // this.page.classList.remove("hidden");
     this.updateUI();
   }
@@ -111,4 +116,6 @@ export class UIGamePage {
   hide() {
     this.page.classList.add("hidden");
   }
+
+
 }

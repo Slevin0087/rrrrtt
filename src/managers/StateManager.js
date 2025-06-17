@@ -22,9 +22,6 @@ export class StateManager {
       player: this.storage.getPlayerStats(),
       settings: this.storage.getGameSettings(),
       shop: this.storage.getShopStats(),
-      achievements: {
-        unlocked: [],
-      },
     };
   }
 

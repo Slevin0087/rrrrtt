@@ -26,16 +26,31 @@ export class Storage {
       },
       selectedItems: {
         faces: {
-          id: "cosmo_faces",
-          styleClass: "cosmo-faces",
+          id: "leather_faces",
+          styleClass: "leather-faces",
         },
         backs: {
           id: "dice_back",
           styleClass: "dice-back",
         },
         backgrounds: {
-          id: "light_green_fon",
-          styleClass: "light-green-fon",
+          id: "classic_fon_4",
+          styleClass: "classic-fon-4",
+        },
+      },
+      achievements: {
+        unlocked: [],
+        locked: [],
+        activeId: "newbie",
+        active: {
+          id: "newbie",
+          title: "Новичок",
+          description: "Сыграть первую игру",
+          icon: "👶",
+          reward: 50,
+          condition: (stats) => stats.gamesPlayed >= 1,
+          rarity: "common",
+          hidden: false,
         },
       },
     };
