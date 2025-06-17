@@ -15,13 +15,13 @@ export class Storage {
       winsWithoutHints: 0,
       purchasedItems: {
         faces: {
-          ids: ["classic_faces", "cosmo_faces"],
+          ids: ["classic_faces", "cosmo_faces", "leather_faces"],
         },
         backs: {
           ids: ["classic_back", "dice_back"],
         },
         backgrounds: {
-          ids: ["classic_fon", "light_green_fon"],
+          ids: ["classic_fon", "light_green_fon", "classic_fon_4"],
         },
       },
       selectedItems: {
