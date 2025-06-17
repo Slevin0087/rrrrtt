@@ -191,6 +191,8 @@
   pointer-events: none;
   z-index: 1000;
   animation: pointsFloatUp 1.5s ease-out forwards;
+  will-change: transform, opacity;
+  -webkit-font-smoothing: antialiased;
 }
 
 @keyframes pointsFloatUp {
