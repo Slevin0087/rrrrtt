@@ -170,29 +170,55 @@ export class Animator {
     }
   }
 
+  // static showPointsAnimation(card, points) {
+  //   // Получаем DOM-элемент карты
+  //   const cardElement = card.domElement;
+  //   if (!cardElement) return;
+
+  //   // Создаем элемент для отображения очков
+  //   const pointsElement = document.createElement("div");
+  //   pointsElement.className = "points-popup";
+  //   pointsElement.textContent = `+${points}`;
+
+  //   // Позиционируем элемент относительно карты
+  //   const cardRect = cardElement.getBoundingClientRect();
+  //   pointsElement.style.left = `${cardRect.left + cardRect.width / 2 - 20}px`;
+  //   pointsElement.style.top = `${cardRect.top}px`;
+
+  //   // Добавляем в DOM
+  //   document.body.appendChild(pointsElement);
+
+  //   // Удаляем элемент после завершения анимации
+  //   setTimeout(() => {
+  //     pointsElement.remove();
+  //   }, 1500);
+  // }
+
   static showPointsAnimation(card, points) {
-    // Получаем DOM-элемент карты
-    const cardElement = card.domElement;
-    if (!cardElement) return;
+  const cardElement = card.domElement;
+  if (!cardElement) return;
 
-    // Создаем элемент для отображения очков
-    const pointsElement = document.createElement("div");
-    pointsElement.className = "points-popup";
-    pointsElement.textContent = `+${points}`;
+  const pointsElement = document.createElement("div");
+  pointsElement.className = "points-popup";
+  pointsElement.textContent = `+${points}`;
 
-    // Позиционируем элемент относительно карты
-    const cardRect = cardElement.getBoundingClientRect();
-    pointsElement.style.left = `${cardRect.left + cardRect.width / 2 - 20}px`;
-    pointsElement.style.top = `${cardRect.top}px`;
+  // 1. Позиционирование через transform + left/top (для iOS)
+  const cardRect = cardElement.getBoundingClientRect();
+  pointsElement.style.position = "fixed";
+  pointsElement.style.left = `${cardRect.left + cardRect.width / 2}px`;
+  pointsElement.style.top = `${cardRect.top}px`;
+  pointsElement.style.transform = "translate(-50%, 0)"; // Центрирование
 
-    // Добавляем в DOM
-    document.body.appendChild(pointsElement);
+  // 2. Форсируем запуск анимации
+  document.body.appendChild(pointsElement);
+  void pointsElement.offsetWidth; // Триггер перерасчёта стилей
 
-    // Удаляем элемент после завершения анимации
-    setTimeout(() => {
-      pointsElement.remove();
-    }, 1500);
-  }
+  // 3. Удаление с задержкой
+  setTimeout(() => {
+    pointsElement.style.opacity = "0"; // Плавное исчезновение
+    setTimeout(() => pointsElement.remove(), 300);
+  }, 1200);
+}
 
   static animationCoinsEarned(text, options = {}) {
     return new Promise((resolve) => {
