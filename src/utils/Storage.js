@@ -47,7 +47,7 @@ export class Storage {
           title: "Новичок",
           description: "Сыграть первую игру",
           icon: "👶",
-          reward: 50,
+          reward: 0,
           condition: (stats) => stats.gamesPlayed >= 1,
           rarity: "common",
           hidden: false,

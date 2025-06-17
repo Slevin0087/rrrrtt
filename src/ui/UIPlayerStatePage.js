@@ -59,6 +59,10 @@ export class UIPlayerStatePage {
       <tr>
         <td class="left-td">Лучшее время:</td>
         <td class="right-td"></td>
+      </tr>
+      <tr>
+        <td class="left-td">Достижение:</td>
+        <td class="right-td">${statePlayer.achievements.active.icons}</td>
       </tr>`;
   }
 
