@@ -209,37 +209,14 @@
   }
 } */
 
-
 .points-popup {
-  position: fixed; /* Лучше работает на iOS, чем absolute */
+  position: fixed;
   font-size: 24px;
   font-weight: bold;
   color: gold;
   text-shadow: 1px 1px 2px black;
-  opacity: 1; /* Начальное состояние */
   pointer-events: none;
   z-index: 10000;
-  animation: pointsFloatUp 1.2s ease-out forwards;
-  /* Оптимизации для iOS: */
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
-  -webkit-font-smoothing: antialiased;
   will-change: transform, opacity;
-}
-
-@keyframes pointsFloatUp {
-  0% {
-    transform: translate(-50%, 0) translateZ(0); /* Центрирование + GPU */
-    opacity: 1;
-  }
-  100% {
-    transform: translate(-50%, -100px) translateZ(0);
-    opacity: 0;
-  }
-}
-
-/* Вендорный префикс для Safari */
-@-webkit-keyframes pointsFloatUp {
-  0% { -webkit-transform: translate(-50%, 0); opacity: 1; }
-  100% { -webkit-transform: translate(-50%, -100px); opacity: 0; }
+  -webkit-font-smoothing: antialiased;
 }

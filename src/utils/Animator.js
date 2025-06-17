@@ -195,30 +195,46 @@ export class Animator {
   // }
 
   static showPointsAnimation(card, points) {
-  const cardElement = card.domElement;
-  if (!cardElement) return;
+    const cardElement = card.domElement;
+    if (!cardElement) return;
 
-  const pointsElement = document.createElement("div");
-  pointsElement.className = "points-popup";
-  pointsElement.textContent = `+${points}`;
+    const pointsElement = document.createElement("div");
+    pointsElement.className = "points-popup";
+    pointsElement.textContent = `+${points}`;
 
-  // 1. Позиционирование через transform + left/top (для iOS)
-  const cardRect = cardElement.getBoundingClientRect();
-  pointsElement.style.position = "fixed";
-  pointsElement.style.left = `${cardRect.left + cardRect.width / 2}px`;
-  pointsElement.style.top = `${cardRect.top}px`;
-  pointsElement.style.transform = "translate(-50%, 0)"; // Центрирование
+    // 1. Позиционирование через transform + left/top (для iOS)
+    const cardRect = cardElement.getBoundingClientRect();
+    pointsElement.style.position = "fixed";
+    pointsElement.style.left = `${cardRect.left + cardRect.width / 2}px`;
+    pointsElement.style.top = `${cardRect.top}px`;
+    pointsElement.style.transform = "translate(-50%, 0)"; // Центрирование
 
-  // 2. Форсируем запуск анимации
-  document.body.appendChild(pointsElement);
-  void pointsElement.offsetWidth; // Триггер перерасчёта стилей
+    // 2. Форсируем запуск анимации
+    document.body.appendChild(pointsElement);
+    // void pointsElement.offsetWidth; // Триггер перерасчёта стилей
 
-  // 3. Удаление с задержкой
-  setTimeout(() => {
-    pointsElement.style.opacity = "0"; // Плавное исчезновение
-    setTimeout(() => pointsElement.remove(), 300);
-  }, 1200);
-}
+    // // 3. Удаление с задержкой
+    // setTimeout(() => {
+    //   pointsElement.style.opacity = "0"; // Плавное исчезновение
+    //   setTimeout(() => pointsElement.remove(), 300);
+    // }, 1200);
+    // Анимация через GSAP
+    gsap.fromTo(
+      pointsElement,
+      {
+        opacity: 1,
+        x: "-50%",
+        y: 0,
+      },
+      {
+        opacity: 0,
+        y: -100,
+        duration: 1.2,
+        ease: "power1.out",
+        onComplete: () => pointsElement.remove(),
+      }
+    );
+  }
 
   static animationCoinsEarned(text, options = {}) {
     return new Promise((resolve) => {
